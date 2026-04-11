@@ -1,24 +1,10 @@
-# README
+## Como rodar
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. Clone o repositório
+2. Copie `.env.example` para `.env` e preencha as variáveis
+3. Execute `docker compose up --build`
+4. Acesse `http://localhost:3000`
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Credenciais iniciais
+- Email: admin@capp.com
+- Senha: admin123
