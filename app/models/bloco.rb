@@ -9,6 +9,7 @@ class Bloco < ApplicationRecord
 
   after_create :gerar_unidades
   after_create :log_criacao
+  after_update :log_atualizacao
 
   private
 
@@ -33,5 +34,9 @@ class Bloco < ApplicationRecord
 
   def log_remocao
     LogAuditorium.registrar(nil, "Bloco #{nome} removido do sistema")
+  end
+
+  def log_atualizacao
+    LogAuditorium.registrar(nil, "Bloco #{nome} atualizado no sistema")
   end
 end

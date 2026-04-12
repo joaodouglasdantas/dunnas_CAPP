@@ -12,7 +12,9 @@ class User < ApplicationRecord
   validates :nome, presence: true
 
   before_destroy :log_remocao
+
   after_create :log_criacao
+  after_update :log_atualizacao
 
   def tem_papel?(nome_papel)
     papeis.exists?(nome: nome_papel)
@@ -43,5 +45,9 @@ class User < ApplicationRecord
 
   def log_remocao
     LogAuditorium.registrar(nil, "Usuário #{nome} (#{email}) removido do sistema")
+  end
+
+  def log_atualizacao
+    LogAuditorium.registrar(nil, "Usuário #{nome} (#{email}) atualizado no sistema")
   end
 end

@@ -8,6 +8,8 @@ class StatusChamado < ApplicationRecord
   before_destroy :verificar_se_pode_deletar
   before_destroy :log_remocao
 
+  after_update :log_atualizacao
+
   private
 
   def verificar_se_pode_deletar
@@ -24,5 +26,9 @@ class StatusChamado < ApplicationRecord
 
   def log_remocao
     LogAuditorium.registrar(nil, "Status '#{nome}' removido do sistema")
+  end
+
+  def log_atualizacao
+    LogAuditorium.registrar(nil, "Status '#{nome}' atualizado no sistema")
   end
 end
