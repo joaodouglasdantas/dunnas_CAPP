@@ -24,6 +24,10 @@
     <%= f.label :password_confirmation, "Confirmar nova senha" %>
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
+  <div>
+    <label>Papel</label>
+    <%= select_tag :papel_id, options_from_collection_for_select(@papeis, :id, :nome, @usuario.papeis.first&.id) %>
+  </div>
   <%= f.submit "Atualizar" %>
 <% end %>
 <%= link_to "Voltar", usuario_path(@usuario) %>

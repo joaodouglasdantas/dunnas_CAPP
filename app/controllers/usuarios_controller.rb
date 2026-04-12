@@ -37,6 +37,7 @@ class UsuariosController < ApplicationController
 
   def update
     if @usuario.update(usuario_update_params)
+      atualizar_papel
       redirect_to usuario_path(@usuario), notice: "Usuário atualizado com sucesso."
     else
       @papeis = Papel.all
@@ -85,5 +86,14 @@ class UsuariosController < ApplicationController
   def atribuir_papel
     papel = Papel.find_by(id: params[:papel_id])
     @usuario.papeis << papel if papel
+  end
+
+  def atualizar_papel
+    return unless params[:papel_id].present?
+    novo_papel = Papel.find_by(id: params[:papel_id])
+    if novo_papel && !@usuario.papeis.include?(novo_papel)
+      @usuario.papeis.clear
+      @usuario.papeis << novo_papel
+    end
   end
 end
