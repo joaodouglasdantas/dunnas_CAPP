@@ -6,6 +6,7 @@ class StatusChamado < ApplicationRecord
     message: "já existe um status padrão definido" }
 
   before_destroy :verificar_se_pode_deletar
+  before_destroy :log_remocao
 
   private
 
@@ -19,5 +20,9 @@ class StatusChamado < ApplicationRecord
       errors.add(:base, "Não é possível excluir um status que está sendo usado em chamados.")
       throw :abort
     end
+  end
+
+  def log_remocao
+    LogAuditorium.registrar(nil, "Status '#{nome}' removido do sistema")
   end
 end

@@ -13,6 +13,7 @@ class Chamado < ApplicationRecord
 
   before_create :definir_status_padrao
   before_update :registrar_finalizacao
+  before_destroy :log_remocao
 
   after_create :log_criacao
   after_update :log_atualizacao
@@ -37,5 +38,9 @@ class Chamado < ApplicationRecord
     if saved_change_to_status_chamado_id?
       LogAuditorium.registrar(usuario, "Chamado ##{id} teve status alterado para #{status_chamado.nome}")
     end
+  end
+
+  def log_remocao
+    LogAuditorium.registrar(usuario, "Chamado ##{id} removido da unidade #{unidade.identificacao}")
   end
 end

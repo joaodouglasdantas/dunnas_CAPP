@@ -5,6 +5,8 @@ class Bloco < ApplicationRecord
   validates :quantidade_andares, presence: true, numericality: { greater_than: 0 }
   validates :unidades_por_andar, presence: true, numericality: { greater_than: 0 }
 
+  before_destroy :log_remocao
+
   after_create :gerar_unidades
   after_create :log_criacao
 
@@ -27,5 +29,9 @@ class Bloco < ApplicationRecord
 
   def log_criacao
     LogAuditorium.registrar(nil, "Bloco #{nome} criado com #{quantidade_andares} andares e #{unidades_por_andar} unidades por andar")
+  end
+
+  def log_remocao
+    LogAuditorium.registrar(nil, "Bloco #{nome} removido do sistema")
   end
 end

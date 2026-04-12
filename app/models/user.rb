@@ -5,15 +5,13 @@ class User < ApplicationRecord
   has_many :usuario_papeis, class_name: "UsuarioPapel", foreign_key: "usuario_id", dependent: :destroy
   has_many :papeis, through: :usuario_papeis, source: :papel
   has_many :moradores_unidades, class_name: "MoradoresUnidade", foreign_key: "user_id", dependent: :destroy
-
   has_many :unidades, through: :moradores_unidades
-  # para ir da cidade A para a cidade C, você precisa passar através (through) da cidade B
-
   has_many :chamados, class_name: "Chamado", foreign_key: "user_id", dependent: :destroy
   has_many :comentarios, class_name: "Comentario", foreign_key: "user_id", dependent: :destroy
 
   validates :nome, presence: true
 
+  before_destroy :log_remocao
   after_create :log_criacao
 
   def tem_papel?(nome_papel)
@@ -37,7 +35,13 @@ class User < ApplicationRecord
     papeis.any? { |papel| papel.permissoes.exists?(nome: nome_permissao) }
   end
 
+  private
+
   def log_criacao
     LogAuditorium.registrar(nil, "Usuário #{nome} (#{email}) criado no sistema")
+  end
+
+  def log_remocao
+    LogAuditorium.registrar(nil, "Usuário #{nome} (#{email}) removido do sistema")
   end
 end

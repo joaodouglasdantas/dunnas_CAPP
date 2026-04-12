@@ -13,6 +13,8 @@ class Comentario < ApplicationRecord
     chamado.unidade.moradores.include?(usuario)
   end
 
+  private
+
   def log_criacao
     LogAuditorium.registrar(usuario, "Comentário adicionado no chamado ##{chamado.id} por #{usuario.nome}")
   end
