@@ -1,6 +1,6 @@
 class StatusChamadosController < ApplicationController
   before_action :apenas_administrador!
-  before_action :set_status_chamado, only: [:edit, :update, :destroy]
+  before_action :set_status_chamado, only: [ :edit, :update, :destroy ]
 
   def index
     @status_chamados = StatusChamado.all
@@ -31,8 +31,11 @@ class StatusChamadosController < ApplicationController
   end
 
   def destroy
-    @status_chamado.destroy
-    redirect_to status_chamados_path, notice: "Status removido com sucesso."
+    if @status_chamado.destroy
+      redirect_to status_chamados_path, notice: "Status removido com sucesso."
+    else
+      redirect_to status_chamados_path, alert: @status_chamado.errors[:base].first
+    end
   end
 
   private
