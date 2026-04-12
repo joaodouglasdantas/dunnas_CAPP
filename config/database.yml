@@ -3,6 +3,7 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   url: <%= ENV["DATABASE_URL"] %>
+  #postgres://[USUÁRIO]:[SENHA]@[HOST]:5432/[NOME_DO_BANCO]
 
 development:
   <<: *default

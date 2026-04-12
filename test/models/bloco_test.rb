@@ -1,3 +1,4 @@
+# Minitest
 require "test_helper"
 
 class BlocoTest < ActiveSupport::TestCase
@@ -32,6 +33,6 @@ class BlocoTest < ActiveSupport::TestCase
       unidades_por_andar: 2
     )
     identificacoes = bloco.unidades.pluck(:identificacao).sort
-    assert_equal ["101", "102", "201", "202"], identificacoes
+    assert_equal [ "101", "102", "201", "202" ], identificacoes
   end
 end

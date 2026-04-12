@@ -1,5 +1,5 @@
 class ChamadosController < ApplicationController
-  before_action :set_chamado, only: [:show, :edit, :update]
+  before_action :set_chamado, only: [ :show, :edit, :update ]
 
   def index
       if current_user.administrador? || current_user.colaborador?
