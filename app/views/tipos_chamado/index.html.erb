@@ -16,7 +16,7 @@
         <td><%= tipo.sla_horas %></td>
         <td>
           <%= link_to "Editar", edit_tipos_chamado_path(tipo) %>
-          <%= link_to "Remover", tipos_chamado_path(tipo), data: { turbo_method: :delete, turbo_confirm: "Tem certeza?" } %>
+          <%= button_to "Remover", tipos_chamado_path(tipo), method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
         </td>
       </tr>
     <% end %>
