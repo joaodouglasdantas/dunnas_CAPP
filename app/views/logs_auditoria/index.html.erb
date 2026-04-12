@@ -1,0 +1,20 @@
+<h1>Auditoria do Sistema</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data/Hora</th>
+      <th>Usuário</th>
+      <th>Ação</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @logs.each do |log| %>
+      <tr>
+        <td><%= log.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+        <td><%= log.usuario&.nome || "Sistema" %></td>
+        <td><%= log.acao %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -23,5 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :logs_auditoria, only: [ :index ]
+
   get "dashboard", to: "dashboard#index"
 end

@@ -17,6 +17,7 @@
           <%= link_to "Chamados", chamados_path %> |
           <%= link_to "Tipos de Chamado", tipos_chamado_index_path %> |
           <%= link_to "Status", status_chamados_path %>
+          <%= link_to "Auditoria", logs_auditoria_path %>
         <% elsif current_user.colaborador? %>
           <%= link_to "Chamados", chamados_path %>
         <% elsif current_user.morador? %>

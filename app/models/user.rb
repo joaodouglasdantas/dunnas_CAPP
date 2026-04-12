@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
   validates :nome, presence: true
 
+  after_create :log_criacao
+
   def tem_papel?(nome_papel)
     papeis.exists?(nome: nome_papel)
   end
@@ -28,5 +30,9 @@ class User < ApplicationRecord
 
   def morador?
     tem_papel?("morador")
+  end
+
+  def log_criacao
+    LogAuditorium.registrar(nil, "Usuário #{nome} (#{email}) criado no sistema")
   end
 end

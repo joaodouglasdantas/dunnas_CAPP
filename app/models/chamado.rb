@@ -14,6 +14,9 @@ class Chamado < ApplicationRecord
   before_create :definir_status_padrao
   before_update :registrar_finalizacao
 
+  after_create :log_criacao
+  after_update :log_atualizacao
+
   private
 
   def definir_status_padrao
@@ -23,6 +26,16 @@ class Chamado < ApplicationRecord
   def registrar_finalizacao
     if status_chamado_id_changed? && status_chamado.nome.downcase == "concluído"
       self.finalizado_em = Time.current
+    end
+  end
+
+  def log_criacao
+    LogAuditorium.registrar(usuario, "Chamado ##{id} aberto por #{usuario.nome} na unidade #{unidade.identificacao}")
+  end
+
+  def log_atualizacao
+    if saved_change_to_status_chamado_id?
+      LogAuditorium.registrar(usuario, "Chamado ##{id} teve status alterado para #{status_chamado.nome}")
     end
   end
 end
