@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
+  before_action :set_current_user
 
   private
 
@@ -13,5 +14,9 @@ class ApplicationController < ActionController::Base
     unless current_user.administrador? || current_user.colaborador? || current_user.tem_permissao?("atualizar_status_chamado")
       redirect_to dashboard_path, alert: "Acesso negado."
     end
+  end
+
+  def set_current_user
+    Current.usuario = current_user
   end
 end

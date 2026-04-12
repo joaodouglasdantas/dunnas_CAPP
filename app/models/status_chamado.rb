@@ -27,7 +27,7 @@ class StatusChamado < ApplicationRecord
   end
 
   def log_remocao
-    LogAuditorium.registrar(nil, "Status '#{nome}' removido do sistema")
+    LogAuditorium.registrar(Current.usuario, "Status '#{nome}' removido do sistema")
   end
 
   def verificar_remocao_padrao
@@ -38,7 +38,7 @@ class StatusChamado < ApplicationRecord
   end
 
   def log_criacao
-    LogAuditorium.registrar(nil, "Status '#{nome}' criado no sistema")
+    LogAuditorium.registrar(Current.usuario, "Status '#{nome}' criado no sistema")
   end
 
   def log_atualizacao
@@ -47,6 +47,6 @@ class StatusChamado < ApplicationRecord
     detalhes = mudancas.map do |campo, (anterior, novo)|
       "#{campo}: '#{anterior}' → '#{novo}'"
     end.join(", ")
-    LogAuditorium.registrar(nil, "Status '#{nome}' atualizado — #{detalhes}")
+    LogAuditorium.registrar(Current.usuario, "Status '#{nome}' atualizado — #{detalhes}")
   end
 end

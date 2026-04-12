@@ -10,11 +10,11 @@ class TipoChamado < ApplicationRecord
   private
 
   def log_remocao
-    LogAuditorium.registrar(nil, "Tipo de chamado '#{titulo}' removido do sistema")
+    LogAuditorium.registrar(Current.usuario, "Tipo de chamado '#{titulo}' removido do sistema")
   end
 
   def log_criacao
-    LogAuditorium.registrar(nil, "Tipo de chamado '#{titulo}' criado no sistema")
+    LogAuditorium.registrar(Current.usuario, "Tipo de chamado '#{titulo}' criado no sistema")
   end
 
   def log_atualizacao
@@ -23,6 +23,6 @@ class TipoChamado < ApplicationRecord
     detalhes = mudancas.map do |campo, (anterior, novo)|
       "#{campo}: '#{anterior}' → '#{novo}'"
     end.join(", ")
-    LogAuditorium.registrar(nil, "Tipo de chamado '#{titulo}' atualizado — #{detalhes}")
+    LogAuditorium.registrar(Current.usuario, "Tipo de chamado '#{titulo}' atualizado — #{detalhes}")
   end
 end

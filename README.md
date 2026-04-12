@@ -11,3 +11,4 @@
 
 ## Observação
 - Caso seu codigo apresente erro ao subir a aplicação pela segunda vez, limpe o cache de construção do Docker usando `docker builder prune -a`
+- Caso de erro de volume do docker use `docker compose down -v`

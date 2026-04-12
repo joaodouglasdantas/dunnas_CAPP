@@ -31,10 +31,6 @@ class UsuariosController < ApplicationController
     @papeis = Papel.all
   end
 
-  def usuario_update_params
-    params.require(:user).permit(:nome, :email, :password, :password_confirmation)
-  end
-
   def update
     if @usuario.update(usuario_update_params)
       atualizar_papel
@@ -59,6 +55,7 @@ class UsuariosController < ApplicationController
         assigned_at: Time.current,
         assigned_by_id: current_user.id
       )
+      LogAuditorium.registrar(current_user, "Usuário #{@usuario.nome} vinculado à unidade #{unidade.identificacao} do bloco #{unidade.bloco.nome}")
     end
     redirect_to usuario_path(@usuario), notice: "Unidade vinculada com sucesso."
   end
@@ -66,6 +63,7 @@ class UsuariosController < ApplicationController
   def desvincular_unidade
     unidade = Unidade.find(params[:unidade_id])
     MoradoresUnidade.find_by(unidade: unidade, user_id: @usuario.id)&.destroy
+    LogAuditorium.registrar(current_user, "Usuário #{@usuario.nome} desvinculado da unidade #{unidade.identificacao} do bloco #{unidade.bloco.nome}")
     redirect_to usuario_path(@usuario), notice: "Unidade desvinculada com sucesso."
   end
 
@@ -80,7 +78,11 @@ class UsuariosController < ApplicationController
   end
 
   def usuario_update_params
-    params.require(:user).permit(:nome, :email)
+    if params[:user][:password].blank?
+      params.require(:user).permit(:nome, :email)
+    else
+      params.require(:user).permit(:nome, :email, :password, :password_confirmation)
+    end
   end
 
   def atribuir_papel

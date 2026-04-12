@@ -29,11 +29,11 @@ class Bloco < ApplicationRecord
   end
 
   def log_criacao
-    LogAuditorium.registrar(nil, "Bloco #{nome} criado com #{quantidade_andares} andares e #{unidades_por_andar} unidades por andar")
+    LogAuditorium.registrar(Current.usuario, "Bloco #{nome} criado com #{quantidade_andares} andares e #{unidades_por_andar} unidades por andar")
   end
 
   def log_remocao
-    LogAuditorium.registrar(nil, "Bloco #{nome} removido do sistema")
+    LogAuditorium.registrar(Current.usuario, "Bloco #{nome} removido do sistema")
   end
 
   def log_atualizacao
@@ -42,6 +42,6 @@ class Bloco < ApplicationRecord
     detalhes = mudancas.map do |campo, (anterior, novo)|
       "#{campo}: '#{anterior}' → '#{novo}'"
     end.join(", ")
-    LogAuditorium.registrar(nil, "Bloco #{nome} atualizado — #{detalhes}")
+    LogAuditorium.registrar(Current.usuario, "Bloco #{nome} atualizado — #{detalhes}")
   end
 end
