@@ -8,34 +8,59 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
-  <body>
-    <nav>
-      <% if user_signed_in? %>
-        <span>Olá, <%= current_user.nome %></span>
-        <% if current_user.administrador? %>
-          <%= link_to "Blocos", blocos_path %> |
-          <%= link_to "Usuários", usuarios_path %> |
-          <%= link_to "Chamados", chamados_path %> |
-          <%= link_to "Tipos de Chamado", tipos_chamado_index_path %> |
-          <%= link_to "Status", status_chamados_path %>
-          <%= link_to "Auditoria", logs_auditoria_path %>
-        <% elsif current_user.colaborador? %>
-          <%= link_to "Chamados", chamados_path %>
-        <% elsif current_user.morador? %>
-          <%= link_to "Meus Chamados", chamados_path %> |
-          <%= link_to "Abrir Chamado", new_chamado_path %>
+  <body style="background-color: #152338; color: #f1f5f9; min-height: 100vh;">
+
+    <% if user_signed_in? %>
+      <nav style="background-color: #1a2e4a; border-bottom: 1px solid #2d4a6b;">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          <span style="color: #a78bfa; font-weight: bold; font-size: 1.25rem;">Capp</span>
+          <div class="flex items-center gap-4 text-sm">
+            <span style="color: #94a3b8;">Olá, <%= current_user.nome %></span>
+            <% if current_user.administrador? %>
+              <%= link_to "Blocos", blocos_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+              <%= link_to "Usuários", usuarios_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+              <%= link_to "Chamados", chamados_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+              <%= link_to "Tipos de Chamado", tipos_chamado_index_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+              <%= link_to "Status", status_chamados_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+              <%= link_to "Auditoria", logs_auditoria_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+            <% elsif current_user.colaborador? %>
+              <%= link_to "Chamados", chamados_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+            <% elsif current_user.morador? %>
+              <%= link_to "Meus Chamados", chamados_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+              <%= link_to "Abrir Chamado", new_chamado_path, style: "color: #f1f5f9;", onmouseover: "this.style.color='#a78bfa'", onmouseout: "this.style.color='#f1f5f9'" %>
+            <% end %>
+            <%= link_to "Sair", destroy_user_session_path, method: :get, style: "background-color: #7c3aed; color: white; padding: 4px 12px; border-radius: 6px;", onmouseover: "this.style.backgroundColor='#6d28d9'", onmouseout: "this.style.backgroundColor='#7c3aed'" %>
+          </div>
+        </div>
+      </nav>
+
+      <div class="max-w-7xl mx-auto px-4 py-6">
+        <% if notice %>
+          <div style="background-color: #064e3b; border: 1px solid #10b981; color: #6ee7b7; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;">
+            <%= notice %>
+          </div>
         <% end %>
-        <%= link_to "Sair", destroy_user_session_path, method: :get %>
+        <% if alert %>
+          <div style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;">
+            <%= alert %>
+          </div>
+        <% end %>
+        <%= yield %>
+      </div>
+
+    <% else %>
+      <% if notice %>
+        <div style="position: fixed; top: 16px; left: 50%; transform: translateX(-50%); background-color: #064e3b; border: 1px solid #10b981; color: #6ee7b7; padding: 12px 16px; border-radius: 8px; z-index: 50;">
+          <%= notice %>
+        </div>
       <% end %>
-    </nav>
-
-    <% if notice %>
-      <p style="color: green"><%= notice %></p>
+      <% if alert %>
+        <div style="position: fixed; top: 16px; left: 50%; transform: translateX(-50%); background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5; padding: 12px 16px; border-radius: 8px; z-index: 50;">
+          <%= alert %>
+        </div>
+      <% end %>
+      <%= yield %>
     <% end %>
-    <% if alert %>
-      <p style="color: red"><%= alert %></p>
-    <% end %>
 
-    <%= yield %>
   </body>
 </html>

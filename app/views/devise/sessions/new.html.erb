@@ -1,24 +1,35 @@
-<h2>Login</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div>
-    <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div>
-    <%= f.label :password, "Senha" %>
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div>
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me, "Lembrar de mim" %>
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #152338;">
+  <div style="background-color: #1a2e4a; border: 1px solid #2d4a6b; border-radius: 12px; padding: 40px; width: 100%; max-width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);">
+    <div style="text-align: center; margin-bottom: 32px;">
+      <h1 style="color: #a78bfa; font-size: 2rem; font-weight: bold; margin-bottom: 4px;">Capp</h1>
+      <p style="color: #94a3b8; font-size: 0.875rem;">Sistema de Gerenciamento de Condomínios</p>
     </div>
-  <% end %>
 
-  <div>
-    <%= f.submit "Entrar" %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div style="margin-bottom: 20px;">
+        <%= f.label :email, style: "display: block; color: #94a3b8; font-size: 0.875rem; margin-bottom: 6px;" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email",
+            style: "width: 100%; background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; border-radius: 8px; padding: 10px 14px; outline: none; box-sizing: border-box;" %>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <%= f.label :password, "Senha", style: "display: block; color: #94a3b8; font-size: 0.875rem; margin-bottom: 6px;" %>
+        <%= f.password_field :password, autocomplete: "current-password",
+            style: "width: 100%; background-color: #152338; border: 1px solid #2d4a6b; color: #e8e8e8; border-radius: 8px; padding: 10px 14px; outline: none; box-sizing: border-box;" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div style="margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, "Lembrar de mim", style: "color: #94a3b8; font-size: 0.875rem;" %>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.submit "Entrar", style: "width: 100%; background-color: #7c3aed; color: white; font-weight: 600; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 1rem; transition: background-color 0.2s;",
+            onmouseover: "this.style.backgroundColor='#6d28d9'",
+            onmouseout: "this.style.backgroundColor='#7c3aed'" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>
