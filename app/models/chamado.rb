@@ -36,7 +36,10 @@ class Chamado < ApplicationRecord
 
   def log_atualizacao
     if saved_change_to_status_chamado_id?
-      LogAuditorium.registrar(usuario, "Chamado ##{id} teve status alterado para #{status_chamado.nome}")
+      LogAuditorium.registrar(
+        Current.usuario,
+        "Chamado ##{id} teve status alterado para #{status_chamado.nome} por #{Current.usuario&.nome}"
+      )
     end
   end
 
