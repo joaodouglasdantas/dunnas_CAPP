@@ -19,6 +19,18 @@ class Chamado < ApplicationRecord
   after_create :log_criacao
   after_update :log_atualizacao
 
+  scope :ativos, -> { where(arquivado: false) }
+  scope :arquivados, -> { where(arquivado: true) }
+
+  def self.arquivar_antigos!
+    concluido = StatusChamado.find_by(nome: "Concluído")
+    return unless concluido
+
+    where(status_chamado: concluido, arquivado: false)
+      .where("finalizado_em < ?", 30.days.ago)
+      .update_all(arquivado: true)
+  end
+
   private
 
   def definir_status_padrao
