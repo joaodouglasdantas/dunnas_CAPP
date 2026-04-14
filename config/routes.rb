@@ -8,6 +8,13 @@ Rails.application.routes.draw do
 
   root to: redirect("/users/sign_in")
 
+  resources :chamados do
+    resources :comentarios, only: [ :create ]
+    member do
+      delete :remover_anexo
+      get :remover_anexo_get
+    end
+  end
   resources :blocos
   resources :chamados do
     resources :comentarios, only: [ :create ]

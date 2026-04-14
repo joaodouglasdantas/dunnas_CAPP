@@ -4,7 +4,7 @@ class Comentario < ApplicationRecord
   belongs_to :chamado
   belongs_to :usuario, class_name: "User", foreign_key: "user_id"
 
-  validates :mensagem, presence: true
+  validates :mensagem, presence: true, unless: -> { anexos.attached? }
   validates :chamado, presence: true
   validates :usuario, presence: true
 

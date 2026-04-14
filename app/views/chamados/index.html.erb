@@ -7,6 +7,54 @@
   <% end %>
 </div>
 
+<div class="rounded-xl p-4 mb-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <%= form_with url: chamados_path, method: :get, local: true do |f| %>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div>
+        <label class="block text-xs mb-1" style="color: #94a3b8;">Status</label>
+        <%= select_tag :status_id,
+            options_from_collection_for_select(@status_list, :id, :nome, params[:status_id]),
+            prompt: "Todos",
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <div>
+        <label class="block text-xs mb-1" style="color: #94a3b8;">Tipo</label>
+        <%= select_tag :tipo_id,
+            options_from_collection_for_select(@tipos_list, :id, :titulo, params[:tipo_id]),
+            prompt: "Todos",
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <% if current_user.administrador? %>
+        <div>
+          <label class="block text-xs mb-1" style="color: #94a3b8;">Bloco</label>
+          <%= select_tag :bloco_id,
+              options_from_collection_for_select(@blocos_list, :id, :nome, params[:bloco_id]),
+              prompt: "Todos",
+              class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+              style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        </div>
+      <% end %>
+      <div>
+        <label class="block text-xs mb-1" style="color: #94a3b8;">Período</label>
+        <%= select_tag :periodo,
+            options_for_select([["Todos", ""], ["Hoje", "hoje"], ["Última semana", "semana"], ["Último mês", "mes"]], params[:periodo]),
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-3">
+      <%= f.submit "Filtrar",
+          class: "px-4 py-2 rounded-lg text-sm text-white font-medium cursor-pointer hover:opacity-75 transition",
+          style: "background-color: #7c3aed; border: none;" %>
+      <%= link_to "Limpar", chamados_path,
+          class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+          style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+    </div>
+  <% end %>
+</div>
+
 <div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
   <div class="overflow-x-auto">
     <table class="w-full">

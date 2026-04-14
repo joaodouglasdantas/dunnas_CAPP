@@ -12,6 +12,24 @@
         style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
   </div>
 
+  <% if current_user.morador? && @chamado.status_chamado.padrao? && @chamado.anexos.attached? %>
+    <div class="rounded-xl p-6 mb-4" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+      <p class="text-sm mb-3 font-medium" style="color: #f1f5f9;">Anexos atuais</p>
+      <div class="flex flex-col gap-2">
+        <% @chamado.anexos.each do |anexo| %>
+          <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="background-color: #152338; border: 1px solid #2d4a6b;">
+            <span class="text-sm" style="color: #f1f5f9;"><%= anexo.filename %></span>
+            <%= link_to "Remover",
+              remover_anexo_get_chamado_path(@chamado, anexo_id: anexo.id),
+              data: { turbo_confirm: "Remover este anexo?" },
+              class: "text-xs px-2 py-1 rounded-lg hover:opacity-75 transition",
+              style: "border: 1px solid #ef4444; color: #ef4444; text-decoration: none;" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
     <%= form_with model: @chamado do |f| %>
 
@@ -43,31 +61,17 @@
         </div>
       <% end %>
 
-      <div class="mb-6">
-        <%= f.label :descricao, "Descrição", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
-        <%= f.text_area :descricao,
-            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; min-height: 100px;" %>
-      </div>
+      <% unless current_user.administrador? || current_user.colaborador? %>
+        <div class="mb-6">
+          <%= f.label :descricao, "Descrição", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+          <%= f.text_area :descricao,
+              class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+              style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; min-height: 100px;" %>
+        </div>
+      <% end %>
 
       <% if current_user.morador? && @chamado.status_chamado.padrao? %>
         <div class="mb-6">
-          <% if @chamado.anexos.attached? %>
-            <p class="text-sm mb-3" style="color: #94a3b8;">Anexos atuais:</p>
-            <div class="flex flex-col gap-2 mb-4">
-              <% @chamado.anexos.each do |anexo| %>
-                <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="background-color: #152338; border: 1px solid #2d4a6b;">
-                  <span class="text-sm" style="color: #f1f5f9;"><%= anexo.filename %></span>
-                  <%= link_to "Remover",
-                      remover_anexo_chamado_path(@chamado, anexo_id: anexo.id),
-                      data: { turbo_method: :delete, turbo_confirm: "Remover este anexo?" },
-                      class: "text-xs px-2 py-1 rounded-lg hover:opacity-75 transition",
-                      style: "border: 1px solid #ef4444; color: #ef4444;" %>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-
           <%= f.label :anexos, "Adicionar anexos", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
 
           <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*",
@@ -97,6 +101,7 @@
 
 <script>
   const MAX_ANEXOS_EDIT = 2;
+  const anexosExistentes = <%= @chamado.anexos.count %>;
   const dtEdit = new DataTransfer();
 
   function previewEditAnexos(input) {
@@ -104,14 +109,17 @@
     const aviso = document.getElementById('edit_anexo_aviso');
     const btn = document.getElementById('btn_edit_anexos');
 
+    const totalAtual = anexosExistentes + dtEdit.files.length;
+    const espacoDisponivel = MAX_ANEXOS_EDIT - totalAtual;
+
     Array.from(input.files).forEach((file) => {
-      if (dtEdit.files.length >= MAX_ANEXOS_EDIT) return;
+      if (dtEdit.files.length >= espacoDisponivel) return;
       dtEdit.items.add(file);
     });
 
     input.files = dtEdit.files;
 
-    if (dtEdit.files.length >= MAX_ANEXOS_EDIT) {
+    if (anexosExistentes + dtEdit.files.length >= MAX_ANEXOS_EDIT) {
       btn.style.display = 'none';
       aviso.textContent = 'Limite de 2 anexos atingido.';
       aviso.style.color = '#f87171';
@@ -151,7 +159,7 @@
         Array.from(newDt.files).forEach(f => dtEdit.items.add(f));
         input.files = dtEdit.files;
 
-        if (dtEdit.files.length < MAX_ANEXOS_EDIT) {
+        if (anexosExistentes + dtEdit.files.length < MAX_ANEXOS_EDIT) {
           btn.style.display = '';
           aviso.textContent = 'Máximo de 2 anexos.';
           aviso.style.color = '#64748b';
@@ -164,4 +172,14 @@
       container.appendChild(wrapper);
     });
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('btn_edit_anexos');
+    const aviso = document.getElementById('edit_anexo_aviso');
+    if (btn && anexosExistentes >= MAX_ANEXOS_EDIT) {
+      btn.style.display = 'none';
+      aviso.textContent = 'Limite de 2 anexos atingido.';
+      aviso.style.color = '#f87171';
+    }
+  });
 </script>

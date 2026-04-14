@@ -1,5 +1,5 @@
 class ChamadosController < ApplicationController
-  before_action :set_chamado, only: [ :show, :edit, :update, :destroy, :remover_anexo ]
+  before_action :set_chamado, only: [ :show, :edit, :update, :destroy, :remover_anexo, :remover_anexo_get ]
 
   def index
     if current_user.administrador?
@@ -13,6 +13,10 @@ class ChamadosController < ApplicationController
                          .where(moradores_unidades: { user_id: current_user.id })
                          .includes(:unidade, :tipo_chamado, :status_chamado)
     end
+    @chamados = aplicar_filtros(@chamados)
+    @status_list = StatusChamado.all
+    @tipos_list = TipoChamado.all
+    @blocos_list = Bloco.all if current_user.administrador?
   end
 
   def show
@@ -61,14 +65,18 @@ class ChamadosController < ApplicationController
     params_permitidos = if current_user.administrador? || current_user.colaborador?
       chamado_update_params
     else
-      # morador só pode editar se o chamado ainda estiver no status padrão
       unless @chamado.status_chamado.padrao?
         redirect_to chamado_path(@chamado), alert: "Não é possível editar um chamado que já está em andamento." and return
       end
       params.require(:chamado).permit(:descricao, :unidade_id, :tipo_chamado_id, anexos: [])
     end
 
-    if @chamado.update(params_permitidos)
+    if @chamado.update(params_permitidos.except(:anexos))
+      if params[:chamado][:anexos].present?
+        params[:chamado][:anexos].each do |anexo|
+          @chamado.anexos.attach(anexo) if anexo.respond_to?(:read)
+        end
+      end
       redirect_to chamado_path(@chamado), notice: "Chamado atualizado com sucesso."
     else
       @unidades = current_user.unidades
@@ -92,6 +100,16 @@ class ChamadosController < ApplicationController
     redirect_to edit_chamado_path(@chamado), notice: "Anexo removido com sucesso."
   end
 
+  def remover_anexo_get
+    unless @chamado.usuario == current_user || current_user.administrador?
+      redirect_to chamado_path(@chamado), alert: "Sem permissão." and return
+    end
+
+    anexo = @chamado.anexos.find(params[:anexo_id])
+    anexo.purge
+    redirect_to edit_chamado_path(@chamado), notice: "Anexo removido com sucesso."
+  end
+
   private
 
   def set_chamado
@@ -104,5 +122,24 @@ class ChamadosController < ApplicationController
 
   def chamado_update_params
     params.require(:chamado).permit(:status_chamado_id, :descricao)
+  end
+
+  def aplicar_filtros(chamados)
+    chamados = chamados.where(status_chamado_id: params[:status_id]) if params[:status_id].present?
+    chamados = chamados.where(tipo_chamado_id: params[:tipo_id]) if params[:tipo_id].present?
+    if params[:bloco_id].present? && current_user.administrador?
+      chamados = chamados.joins(:unidade).where(unidades: { bloco_id: params[:bloco_id] })
+    end
+    if params[:periodo].present?
+      case params[:periodo]
+      when "hoje"
+        chamados = chamados.where(created_at: Time.current.beginning_of_day..Time.current.end_of_day)
+      when "semana"
+        chamados = chamados.where(created_at: 1.week.ago..Time.current)
+      when "mes"
+        chamados = chamados.where(created_at: 1.month.ago..Time.current)
+      end
+    end
+    chamados.order(created_at: :desc)
   end
 end
