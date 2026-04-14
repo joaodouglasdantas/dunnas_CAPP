@@ -1,5 +1,5 @@
 class ChamadosController < ApplicationController
-  before_action :set_chamado, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_chamado, only: [ :show, :edit, :update, :destroy, :remover_anexo ]
 
   def index
     if current_user.administrador?
@@ -44,20 +44,52 @@ class ChamadosController < ApplicationController
   end
 
   def edit
-    apenas_administrador_ou_colaborador!
-    @status_list = StatusChamado.all
+    unless current_user.administrador? || current_user.colaborador? || @chamado.usuario == current_user
+      redirect_to chamados_path, alert: "Sem permissão." and return
+    end
+
+    @unidades = current_user.unidades
+    @tipos = TipoChamado.all
+    @status_list = StatusChamado.all if current_user.administrador? || current_user.colaborador?
   end
 
   def update
-      apenas_administrador_ou_colaborador!
-      return if performed?
-      # verificando se já houve um redirect e parando a execução
-      if @chamado.update(chamado_update_params)
-        redirect_to chamado_path(@chamado), notice: "Chamado atualizado com sucesso."
-      else
-        @status_list = StatusChamado.all
-        render :edit, status: :unprocessable_entity
+    unless current_user.administrador? || current_user.colaborador? || @chamado.usuario == current_user
+      redirect_to chamados_path, alert: "Sem permissão." and return
+    end
+
+    params_permitidos = if current_user.administrador? || current_user.colaborador?
+      chamado_update_params
+    else
+      # morador só pode editar se o chamado ainda estiver no status padrão
+      unless @chamado.status_chamado.padrao?
+        redirect_to chamado_path(@chamado), alert: "Não é possível editar um chamado que já está em andamento." and return
       end
+      params.require(:chamado).permit(:descricao, :unidade_id, :tipo_chamado_id, anexos: [])
+    end
+
+    if @chamado.update(params_permitidos)
+      redirect_to chamado_path(@chamado), notice: "Chamado atualizado com sucesso."
+    else
+      @unidades = current_user.unidades
+      @tipos = TipoChamado.all
+      @status_list = StatusChamado.all if current_user.administrador? || current_user.colaborador?
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def remover_anexo
+    unless @chamado.usuario == current_user || current_user.administrador?
+      redirect_to chamado_path(@chamado), alert: "Sem permissão." and return
+    end
+
+    unless @chamado.status_chamado.padrao? || current_user.administrador?
+      redirect_to chamado_path(@chamado), alert: "Não é possível editar um chamado em andamento." and return
+    end
+
+    anexo = @chamado.anexos.find(params[:anexo_id])
+    anexo.purge
+    redirect_to edit_chamado_path(@chamado), notice: "Anexo removido com sucesso."
   end
 
   private

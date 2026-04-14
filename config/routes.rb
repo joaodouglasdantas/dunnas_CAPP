@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   resources :blocos
   resources :chamados do
     resources :comentarios, only: [ :create ]
+    member do
+      delete :remover_anexo
+    end
   end
   resources :tipos_chamado
   resources :status_chamados

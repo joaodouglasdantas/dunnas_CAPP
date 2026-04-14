@@ -43,21 +43,51 @@
 
       <div class="mb-6">
         <%= f.label :anexos, "Anexos (opcional)", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+
         <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*",
             id: "chamado_anexos_input",
             onchange: "previewChamadoAnexos(this)",
-            class: "text-sm", style: "color: #94a3b8;" %>
+            class: "hidden" %>
+
+        <button type="button"
+            id="btn_escolher_arquivos"
+            onclick="document.getElementById('chamado_anexos_input').click()"
+            class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-75 transition"
+            style="background-color: #152338; border: 1px solid #2d4a6b; color: #94a3b8;">
+          📎 Escolher arquivos
+        </button>
+
+        <p id="anexo_aviso" class="text-xs mt-1" style="color: #64748b;">Máximo de 2 anexos.</p>
+
         <div id="chamado_preview_container" class="flex flex-wrap gap-2 mt-2"></div>
       </div>
 
       <script>
+        const MAX_ANEXOS = 2;
+        const dt = new DataTransfer();
+
         function previewChamadoAnexos(input) {
           const container = document.getElementById('chamado_preview_container');
+          const aviso = document.getElementById('anexo_aviso');
+          const btn = document.getElementById('btn_escolher_arquivos');
+
+          Array.from(input.files).forEach((file) => {
+            if (dt.files.length >= MAX_ANEXOS) return;
+            dt.items.add(file);
+          });
+
+          input.files = dt.files;
+
+          if (dt.files.length >= MAX_ANEXOS) {
+            btn.style.display = 'none';
+            aviso.textContent = 'Limite de 2 anexos atingido.';
+            aviso.style.color = '#f87171';
+          }
+
           container.innerHTML = '';
-          Array.from(input.files).forEach((file, index) => {
+          Array.from(dt.files).forEach((file, index) => {
             const wrapper = document.createElement('div');
             wrapper.style.cssText = 'position: relative; display: inline-block;';
-            wrapper.dataset.index = index;
 
             if (file.type.startsWith('image/')) {
               const reader = new FileReader();
@@ -75,23 +105,29 @@
               wrapper.appendChild(div);
             }
 
-            const btn = document.createElement('button');
-            btn.textContent = '✕';
-            btn.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
-            btn.onclick = (e) => {
+            const btnRemover = document.createElement('button');
+            btnRemover.textContent = '✕';
+            btnRemover.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
+            btnRemover.onclick = (e) => {
               e.preventDefault();
-              wrapper.remove();
               const newDt = new DataTransfer();
-              Array.from(container.querySelectorAll('[data-index]')).forEach(el => {
-                if (el !== wrapper) {
-                  const idx = parseInt(el.dataset.index);
-                  newDt.items.add(input.files[idx]);
-                }
+              Array.from(dt.files).forEach((f, i) => {
+                if (i !== index) newDt.items.add(f);
               });
-              input.files = newDt.files;
+              while (dt.items.length > 0) dt.items.remove(0);
+              Array.from(newDt.files).forEach(f => dt.items.add(f));
+              input.files = dt.files;
+
+              if (dt.files.length < MAX_ANEXOS) {
+                btn.style.display = '';
+                aviso.textContent = 'Máximo de 2 anexos.';
+                aviso.style.color = '#64748b';
+              }
+
+              wrapper.remove();
             };
 
-            wrapper.appendChild(btn);
+            wrapper.appendChild(btnRemover);
             container.appendChild(wrapper);
           });
         }
