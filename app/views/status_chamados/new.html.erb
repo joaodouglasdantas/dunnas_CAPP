@@ -1,3 +1,11 @@
-<h1>Novo Status</h1>
-<%= render "form", status_chamado: @status_chamado %>
-<%= link_to "Voltar", status_chamados_path %>
+<div class="max-w-2xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold" style="color: #a78bfa;">Novo Status</h1>
+    <%= link_to "Voltar", status_chamados_path,
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+  </div>
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <%= render "form", status_chamado: @status_chamado %>
+  </div>
+</div>

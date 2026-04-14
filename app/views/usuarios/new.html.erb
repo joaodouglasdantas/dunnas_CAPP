@@ -1,34 +1,55 @@
-<h1>Novo Usuário</h1>
-<%= form_with model: @usuario, url: usuarios_path do |f| %>
-  <% if @usuario.errors.any? %>
-    <ul>
-      <% @usuario.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+<div class="max-w-2xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold" style="color: #a78bfa;">Novo Usuário</h1>
+    <%= link_to "Voltar", usuarios_path,
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+  </div>
+
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <%= form_with model: @usuario, url: usuarios_path do |f| %>
+      <% if @usuario.errors.any? %>
+        <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5;">
+          <ul class="list-disc list-inside">
+            <% @usuario.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
       <% end %>
-    </ul>
-  <% end %>
 
-  <div>
-    <%= f.label :nome %>
-    <%= f.text_field :nome %>
-  </div>
-  <div>
-    <%= f.label :email %>
-    <%= f.email_field :email %>
-  </div>
-  <div>
-    <%= f.label :password, "Senha" %>
-    <%= f.password_field :password %>
-  </div>
-  <div>
-    <%= f.label :password_confirmation, "Confirmar senha" %>
-    <%= f.password_field :password_confirmation %>
-  </div>
-  <div>
-    <label>Papel</label>
-    <%= select_tag :papel_id, options_from_collection_for_select(@papeis, :id, :nome) %>
-  </div>
+      <div class="mb-4">
+        <%= f.label :nome, class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.text_field :nome, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <div class="mb-4">
+        <%= f.label :email, class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.email_field :email, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <div class="mb-4">
+        <%= f.label :password, "Senha", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.password_field :password, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <div class="mb-4">
+        <%= f.label :password_confirmation, "Confirmar senha", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.password_field :password_confirmation, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm mb-2" style="color: #94a3b8;">Papel</label>
+        <%= select_tag :papel_id,
+            options_from_collection_for_select(@papeis, :id, :nome),
+            prompt: "Selecione um papel",
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
 
-  <%= f.submit "Criar Usuário" %>
-<% end %>
-<%= link_to "Voltar", usuarios_path %>
+      <%= f.submit "Criar Usuário",
+          class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
+          style: "background-color: #7c3aed; border: none;" %>
+    <% end %>
+  </div>
+</div>

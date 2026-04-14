@@ -1,20 +1,82 @@
-<h1>Dashboard</h1>
-
 <% if current_user.administrador? %>
-  <h2>Resumo</h2>
-  <p>Total de blocos: <%= @blocos.count %></p>
-  <p>Total de chamados: <%= @chamados.count %></p>
-  <p>Total de usuários: <%= @usuarios.count %></p>
-  <%= link_to "Gerenciar Blocos", blocos_path %>
+  <h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Dashboard</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+      <p class="text-sm mb-2" style="color: #94a3b8;">Total de Blocos</p>
+      <p class="text-4xl font-bold" style="color: #a78bfa;"><%= @blocos.count %></p>
+    </div>
+    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+      <p class="text-sm mb-2" style="color: #94a3b8;">Total de Chamados</p>
+      <p class="text-4xl font-bold" style="color: #a78bfa;"><%= @chamados.count %></p>
+    </div>
+    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+      <p class="text-sm mb-2" style="color: #94a3b8;">Total de Usuários</p>
+      <p class="text-4xl font-bold" style="color: #a78bfa;"><%= @usuarios.count %></p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+      <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Ações rápidas</h2>
+      <div class="flex flex-col gap-2">
+        <%= link_to "Gerenciar Blocos", blocos_path,
+            class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
+            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        <%= link_to "Gerenciar Usuários", usuarios_path,
+            class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
+            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        <%= link_to "Ver Chamados", chamados_path,
+            class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
+            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        <%= link_to "Auditoria", logs_auditoria_path,
+            class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
+            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+    </div>
+
+    <div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+      <div class="px-6 py-4" style="border-bottom: 1px solid #2d4a6b;">
+        <h2 class="text-base font-semibold" style="color: #f1f5f9;">Últimos chamados</h2>
+      </div>
+      <% if @chamados.any? %>
+        <% @chamados.order(created_at: :desc).limit(5).each do |chamado| %>
+          <div class="flex justify-between items-center px-6 py-3" style="border-bottom: 1px solid #2d4a6b;">
+            <div>
+              <p class="text-sm" style="color: #f1f5f9;">#<%= chamado.id %> — <%= chamado.tipo_chamado.titulo %></p>
+              <p class="text-xs" style="color: #94a3b8;"><%= chamado.unidade.identificacao %></p>
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full" style="background-color: #2d4a6b; color: #a78bfa;"><%= chamado.status_chamado.nome %></span>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="px-6 py-4 text-sm" style="color: #94a3b8;">Nenhum chamado ainda.</p>
+      <% end %>
+    </div>
+  </div>
 
 <% elsif current_user.colaborador? %>
-  <h2>Chamados Pendentes</h2>
-  <p>Total de chamados: <%= @chamados.count %></p>
-  <%= link_to "Ver Chamados", chamados_path %>
+  <h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Dashboard</h1>
+  <div class="rounded-xl p-6 max-w-sm" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <p class="text-sm mb-2" style="color: #94a3b8;">Chamados no seu escopo</p>
+    <p class="text-4xl font-bold mb-4" style="color: #a78bfa;"><%= @chamados.count %></p>
+    <%= link_to "Ver Chamados", chamados_path,
+        class: "inline-block py-2 px-4 rounded-lg text-sm text-white font-medium",
+        style: "background-color: #7c3aed;" %>
+  </div>
 
 <% elsif current_user.morador? %>
-  <h2>Meus Chamados</h2>
-  <p>Total de chamados: <%= @chamados.count %></p>
-  <%= link_to "Ver Meus Chamados", chamados_path %> |
-  <%= link_to "Abrir Novo Chamado", new_chamado_path %>
+  <h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Dashboard</h1>
+  <div class="rounded-xl p-6 max-w-sm" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <p class="text-sm mb-2" style="color: #94a3b8;">Meus chamados</p>
+    <p class="text-4xl font-bold mb-4" style="color: #a78bfa;"><%= @chamados.count %></p>
+    <div class="flex gap-2 flex-wrap">
+      <%= link_to "Ver Chamados", chamados_path,
+          class: "inline-block py-2 px-4 rounded-lg text-sm text-white font-medium",
+          style: "background-color: #7c3aed;" %>
+      <%= link_to "Abrir Novo Chamado", new_chamado_path,
+          class: "inline-block py-2 px-4 rounded-lg text-sm",
+          style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+    </div>
+  </div>
 <% end %>

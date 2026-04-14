@@ -1,24 +1,35 @@
 <%= form_with model: bloco do |f| %>
-  <% if bloco.errors.any? %>
-    <ul>
-      <% bloco.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
-  <% end %>
+  <div style="background-color: #1a2e4a; border: 1px solid #2d4a6b; border-radius: 12px; padding: 24px;">
+    <% if bloco.errors.any? %>
+      <div style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;">
+        <ul style="margin: 0; padding-left: 16px;">
+          <% bloco.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-  <div>
-    <%= f.label :nome %>
-    <%= f.text_field :nome %>
-  </div>
-  <div>
-    <%= f.label :quantidade_andares, "Quantidade de andares" %>
-    <%= f.number_field :quantidade_andares, min: 1 %>
-  </div>
-  <div>
-    <%= f.label :unidades_por_andar, "Unidades por andar" %>
-    <%= f.number_field :unidades_por_andar, min: 1 %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :nome, style: "display: block; color: #94a3b8; font-size: 0.875rem; margin-bottom: 6px;" %>
+      <%= f.text_field :nome,
+          style: "width: 100%; background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; border-radius: 8px; padding: 10px 14px; outline: none; box-sizing: border-box;" %>
+    </div>
 
-  <%= f.submit %>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :quantidade_andares, "Quantidade de andares", style: "display: block; color: #94a3b8; font-size: 0.875rem; margin-bottom: 6px;" %>
+      <%= f.number_field :quantidade_andares, min: 1,
+          style: "width: 100%; background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; border-radius: 8px; padding: 10px 14px; outline: none; box-sizing: border-box;" %>
+    </div>
+
+    <div style="margin-bottom: 24px;">
+      <%= f.label :unidades_por_andar, "Unidades por andar", style: "display: block; color: #94a3b8; font-size: 0.875rem; margin-bottom: 6px;" %>
+      <%= f.number_field :unidades_por_andar, min: 1,
+          style: "width: 100%; background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; border-radius: 8px; padding: 10px 14px; outline: none; box-sizing: border-box;" %>
+    </div>
+
+    <%= f.submit style: "background-color: #7c3aed; color: white; font-weight: 600; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.875rem;",
+        onmouseover: "this.style.backgroundColor='#6d28d9'",
+        onmouseout: "this.style.backgroundColor='#7c3aed'" %>
+  </div>
 <% end %>

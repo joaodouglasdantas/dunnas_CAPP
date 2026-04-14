@@ -4,6 +4,7 @@ class Chamado < ApplicationRecord
   belongs_to :tipo_chamado
   belongs_to :status_chamado, optional: true
 
+  has_many_attached :anexos
   has_many :comentarios, dependent: :destroy
 
   validates :descricao, presence: true

@@ -67,7 +67,7 @@ class ChamadosController < ApplicationController
   end
 
   def chamado_params
-    params.require(:chamado).permit(:unidade_id, :tipo_chamado_id, :descricao)
+    params.require(:chamado).permit(:unidade_id, :tipo_chamado_id, :descricao, anexos: [])
   end
 
   def chamado_update_params

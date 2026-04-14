@@ -1,22 +1,11 @@
-<h1>Editar Status</h1>
-<%= form_with model: @status_chamado do |f| %>
-  <% if @status_chamado.errors.any? %>
-    <ul>
-      <% @status_chamado.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
-  <% end %>
-
-  <div>
-    <%= f.label :nome %>
-    <%= f.text_field :nome %>
+<div class="max-w-2xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold" style="color: #a78bfa;">Editar Status</h1>
+    <%= link_to "Voltar", status_chamados_path,
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
   </div>
-  <div>
-    <%= f.label :padrao, "Padrão" %>
-    <%= f.check_box :padrao %>
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <%= render "form", status_chamado: @status_chamado %>
   </div>
-
-  <%= f.submit %>
-<% end %>
-<%= link_to "Voltar", status_chamados_path %>
+</div>

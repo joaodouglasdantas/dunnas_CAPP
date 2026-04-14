@@ -1,81 +1,99 @@
-<h1><%= @usuario.nome %></h1>
-<p><strong>Email:</strong> <%= @usuario.email %></p>
-<p><strong>Papel:</strong> <%= @usuario.papeis.map(&:nome).join(", ") %></p>
-
-<h2>Unidades Vinculadas</h2>
-<% if @unidades_vinculadas.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Bloco</th>
-        <th>Identificação</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @unidades_vinculadas.each do |unidade| %>
-        <tr>
-          <td><%= unidade.bloco.nome %></td>
-          <td><%= unidade.identificacao %></td>
-          <td>
-            <%= button_to "Desvincular", desvincular_unidade_usuario_path(@usuario, unidade_id: unidade.id), method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>Nenhuma unidade vinculada.</p>
-<% end %>
-
-<h2>Vincular Nova Unidade</h2>
-<%= form_with url: vincular_unidade_usuario_path(@usuario), method: :post do |f| %>
-  <div>
-    <%= select_tag :unidade_id,
-        grouped_options_for_select(
-          @todas_unidades.group_by { |u| u.bloco.nome }
-                         .transform_values { |unidades| unidades.map { |u| [u.identificacao, u.id] } }
-        ),
-        prompt: "Selecione uma unidade" %>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold" style="color: #a78bfa;"><%= @usuario.nome %></h1>
+  <div class="flex gap-2">
+    <%= link_to "Editar", edit_usuario_path(@usuario),
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #7c3aed; color: white;" %>
+    <%= link_to "Voltar", usuarios_path,
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
   </div>
-  <%= f.submit "Vincular" %>
-<% end %>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Informações</h2>
+    <div class="space-y-3">
+      <div>
+        <p class="text-xs mb-1" style="color: #94a3b8;">Email</p>
+        <p class="text-sm" style="color: #f1f5f9;"><%= @usuario.email %></p>
+      </div>
+      <div>
+        <p class="text-xs mb-1" style="color: #94a3b8;">Papel</p>
+        <span class="text-xs px-2 py-1 rounded-full" style="background-color: #2d4a6b; color: #a78bfa;"><%= @usuario.papeis.map(&:nome).join(", ") %></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Unidades Vinculadas</h2>
+    <% if @unidades_vinculadas.any? %>
+      <div class="space-y-2 mb-4">
+        <% @unidades_vinculadas.each do |unidade| %>
+          <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid #2d4a6b;">
+            <span class="text-sm" style="color: #f1f5f9;"><%= unidade.bloco.nome %> — <%= unidade.identificacao %></span>
+            <%= button_to "Desvincular", desvincular_unidade_usuario_path(@usuario, unidade_id: unidade.id), method: :delete,
+                data: { turbo_confirm: "Tem certeza?" },
+                class: "text-xs px-2 py-1 rounded cursor-pointer hover:opacity-75",
+                style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-sm mb-4" style="color: #94a3b8;">Nenhuma unidade vinculada.</p>
+    <% end %>
+
+    <%= form_with url: vincular_unidade_usuario_path(@usuario), method: :post do |f| %>
+      <div class="flex gap-2">
+        <%= select_tag :unidade_id,
+            grouped_options_for_select(
+              @todas_unidades.group_by { |u| u.bloco.nome }
+                             .transform_values { |unidades| unidades.map { |u| [u.identificacao, u.id] } }
+            ),
+            prompt: "Selecione uma unidade",
+            class: "flex-1 rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        <%= f.submit "Vincular",
+            class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
+            style: "background-color: #7c3aed; border: none;" %>
+      </div>
+    <% end %>
+  </div>
+</div>
 
 <% if @usuario.colaborador? %>
-  <h2>Tipos de Chamado Responsável</h2>
-  <% if @usuario.tipos_chamado_responsavel.any? %>
-    <table>
-      <thead>
-        <tr>
-          <th>Tipo</th>
-          <th>SLA (horas)</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Tipos de Chamado Responsável</h2>
+    <% if @usuario.tipos_chamado_responsavel.any? %>
+      <div class="space-y-2 mb-4">
         <% @usuario.tipos_chamado_responsavel.each do |tipo| %>
-          <tr>
-            <td><%= tipo.titulo %></td>
-            <td><%= tipo.sla_horas %></td>
-            <td>
-              <%= button_to "Desvincular", desvincular_tipo_chamado_usuario_path(@usuario, tipo_chamado_id: tipo.id), method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
-            </td>
-          </tr>
+          <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid #2d4a6b;">
+            <div>
+              <span class="text-sm" style="color: #f1f5f9;"><%= tipo.titulo %></span>
+              <span class="text-xs ml-2" style="color: #94a3b8;">SLA: <%= tipo.sla_horas %>h</span>
+            </div>
+            <%= button_to "Desvincular", desvincular_tipo_chamado_usuario_path(@usuario, tipo_chamado_id: tipo.id), method: :delete,
+                data: { turbo_confirm: "Tem certeza?" },
+                class: "text-xs px-2 py-1 rounded cursor-pointer hover:opacity-75",
+                style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+          </div>
         <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>Nenhum tipo de chamado vinculado.</p>
-  <% end %>
+      </div>
+    <% else %>
+      <p class="text-sm mb-4" style="color: #94a3b8;">Nenhum tipo de chamado vinculado.</p>
+    <% end %>
 
-  <h3>Vincular Tipo de Chamado</h3>
-  <%= form_with url: vincular_tipo_chamado_usuario_path(@usuario), method: :post do |f| %>
-    <div>
-      <%= select_tag :tipo_chamado_id, options_from_collection_for_select(@todos_tipos, :id, :titulo), prompt: "Selecione um tipo" %>
-    </div>
-    <%= f.submit "Vincular" %>
-  <% end %>
+    <%= form_with url: vincular_tipo_chamado_usuario_path(@usuario), method: :post do |f| %>
+      <div class="flex gap-2">
+        <%= select_tag :tipo_chamado_id,
+            options_from_collection_for_select(@todos_tipos, :id, :titulo),
+            prompt: "Selecione um tipo",
+            class: "flex-1 rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        <%= f.submit "Vincular",
+            class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
+            style: "background-color: #7c3aed; border: none;" %>
+      </div>
+    <% end %>
+  </div>
 <% end %>
-
-<%= link_to "Editar", edit_usuario_path(@usuario) %> |
-<%= link_to "Voltar", usuarios_path %>

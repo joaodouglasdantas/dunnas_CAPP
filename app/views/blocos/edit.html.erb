@@ -1,3 +1,8 @@
-<h1>Editar Bloco</h1>
-<%= render "form", bloco: @bloco %>
-<%= link_to "Voltar", blocos_path %>
+<div style="max-width: 600px; margin: 0 auto;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <h1 style="color: #a78bfa; font-size: 1.5rem; font-weight: bold;">Editar Bloco</h1>
+    <%= link_to "Voltar", blocos_path,
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.875rem;" %>
+  </div>
+  <%= render "form", bloco: @bloco %>
+</div>

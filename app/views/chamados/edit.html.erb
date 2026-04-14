@@ -1,9 +1,23 @@
-<h1>Atualizar Status do Chamado #<%= @chamado.id %></h1>
-<%= form_with model: @chamado do |f| %>
-  <div>
-    <%= f.label :status_chamado_id, "Status" %>
-    <%= f.select :status_chamado_id, @status_list.map { |s| [s.nome, s.id] } %>
+<div class="max-w-2xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold" style="color: #a78bfa;">Atualizar Status — Chamado #<%= @chamado.id %></h1>
+    <%= link_to "Voltar", chamado_path(@chamado),
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
   </div>
-  <%= f.submit "Atualizar" %>
-<% end %>
-<%= link_to "Voltar", chamado_path(@chamado) %>
+
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <%= form_with model: @chamado do |f| %>
+      <div class="mb-6">
+        <%= f.label :status_chamado_id, "Status", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.select :status_chamado_id, @status_list.map { |s| [s.nome, s.id] },
+            {},
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <%= f.submit "Atualizar",
+          class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
+          style: "background-color: #7c3aed; border: none;" %>
+    <% end %>
+  </div>
+</div>

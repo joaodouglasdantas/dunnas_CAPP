@@ -1,26 +1,58 @@
-<h1>Bloco <%= @bloco.nome %></h1>
-<p>Andares: <%= @bloco.quantidade_andares %></p>
-<p>Unidades por andar: <%= @bloco.unidades_por_andar %></p>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+  <h1 style="color: #a78bfa; font-size: 1.5rem; font-weight: bold;">Bloco <%= @bloco.nome %></h1>
+  <div style="display: flex; gap: 8px;">
+    <%= link_to "Editar", edit_bloco_path(@bloco),
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.875rem;",
+        onmouseover: "this.style.backgroundColor='#7c3aed'; this.style.borderColor='#7c3aed'",
+        onmouseout: "this.style.backgroundColor='#1e3352'; this.style.borderColor='#2d4a6b'" %>
+    <%= link_to "Voltar", blocos_path,
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.875rem;",
+        onmouseover: "this.style.backgroundColor='#1e3352'",
+        onmouseout: "this.style.backgroundColor='#1e3352'" %>
+  </div>
+</div>
 
-<h2>Unidades</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Identificação</th>
-      <th>Andar</th>
-      <th>Moradores</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @bloco.unidades.order(:numero_andar, :numero_unidade).each do |unidade| %>
-      <tr>
-        <td><%= unidade.identificacao %></td>
-        <td><%= unidade.numero_andar %></td>
-        <td><%= unidade.moradores.map(&:nome).join(", ") %></td>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+  <div style="background-color: #1a2e4a; border: 1px solid #2d4a6b; border-radius: 12px; padding: 24px;">
+    <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 8px;">Andares</p>
+    <p style="color: #a78bfa; font-size: 2rem; font-weight: bold;"><%= @bloco.quantidade_andares %></p>
+  </div>
+  <div style="background-color: #1a2e4a; border: 1px solid #2d4a6b; border-radius: 12px; padding: 24px;">
+    <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 8px;">Unidades por andar</p>
+    <p style="color: #a78bfa; font-size: 2rem; font-weight: bold;"><%= @bloco.unidades_por_andar %></p>
+  </div>
+  <div style="background-color: #1a2e4a; border: 1px solid #2d4a6b; border-radius: 12px; padding: 24px;">
+    <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 8px;">Total de unidades</p>
+    <p style="color: #a78bfa; font-size: 2rem; font-weight: bold;"><%= @bloco.unidades.count %></p>
+  </div>
+</div>
+
+<div style="background-color: #1a2e4a; border: 1px solid #2d4a6b; border-radius: 12px; overflow: hidden;">
+  <div style="padding: 16px 20px; border-bottom: 1px solid #2d4a6b;">
+    <h2 style="color: #f1f5f9; font-size: 1rem; font-weight: 600;">Unidades</h2>
+  </div>
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="border-bottom: 1px solid #2d4a6b;">
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Identificação</th>
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Andar</th>
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Moradores</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to "Editar", edit_bloco_path(@bloco) %> |
-<%= link_to "Voltar", blocos_path %>
+    </thead>
+    <tbody>
+      <% @bloco.unidades.order(:numero_andar, :numero_unidade).each do |unidade| %>
+        <tr style="border-bottom: 1px solid #2d4a6b;" onmouseover="this.style.backgroundColor='#1e3352'" onmouseout="this.style.backgroundColor='transparent'">
+          <td style="padding: 12px 16px; color: #f1f5f9;"><%= unidade.identificacao %></td>
+          <td style="padding: 12px 16px; color: #f1f5f9;"><%= unidade.numero_andar %></td>
+          <td style="padding: 12px 16px; color: #94a3b8;">
+            <% if unidade.moradores.any? %>
+              <%= unidade.moradores.map(&:nome).join(", ") %>
+            <% else %>
+              <span style="color: #4a5568; font-style: italic;">Sem moradores</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

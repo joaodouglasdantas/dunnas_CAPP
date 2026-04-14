@@ -1,20 +1,24 @@
-<h1>Auditoria do Sistema</h1>
+<h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Auditoria do Sistema</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Data/Hora</th>
-      <th>Usuário</th>
-      <th>Ação</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @logs.each do |log| %>
-      <tr>
-        <td><%= log.created_at.strftime("%d/%m/%Y %H:%M") %></td>
-        <td><%= log.usuario&.nome || "Sistema" %></td>
-        <td><%= log.acao %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr style="border-bottom: 1px solid #2d4a6b;">
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Data/Hora</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Usuário</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @logs.each do |log| %>
+          <tr style="border-bottom: 1px solid #2d4a6b;">
+            <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: #94a3b8;"><%= log.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+            <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: #a78bfa;"><%= log.usuario&.nome || "Sistema" %></td>
+            <td class="px-4 py-3 text-sm" style="color: #f1f5f9;"><%= log.acao %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,29 +1,48 @@
-<h1>Usuários</h1>
-<%= link_to "Novo Usuário", new_usuario_path %>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold" style="color: #a78bfa;">Usuários</h1>
+  <%= link_to "Novo Usuário", new_usuario_path,
+      class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition",
+      style: "background-color: #7c3aed;" %>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Email</th>
-      <th>Papel</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @usuarios.each do |usuario| %>
-      <tr>
-        <td><%= usuario.nome %></td>
-        <td><%= usuario.email %></td>
-        <td><%= usuario.papeis.map(&:nome).join(", ") %></td>
-        <td>
-          <%= link_to "Ver", usuario_path(usuario) %>
-          <%= link_to "Editar", edit_usuario_path(usuario) %>
-          <% unless usuario == current_user %>
-            <%= button_to "Remover", usuario_path(usuario), method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr style="border-bottom: 1px solid #2d4a6b;">
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Nome</th>
+          <th class="px-4 py-3 text-left text-sm font-medium hidden md:table-cell" style="color: #94a3b8;">Email</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Papel</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @usuarios.each do |usuario| %>
+          <tr style="border-bottom: 1px solid #2d4a6b;">
+            <td class="px-4 py-3 text-sm" style="color: #f1f5f9;"><%= usuario.nome %></td>
+            <td class="px-4 py-3 text-sm hidden md:table-cell" style="color: #94a3b8;"><%= usuario.email %></td>
+            <td class="px-4 py-3">
+              <span class="text-xs px-2 py-1 rounded-full" style="background-color: #2d4a6b; color: #a78bfa;"><%= usuario.papeis.map(&:nome).join(", ") %></span>
+            </td>
+            <td class="px-4 py-3">
+              <div class="flex gap-2">
+                <%= link_to "Ver", usuario_path(usuario),
+                    class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
+                    style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+                <%= link_to "Editar", edit_usuario_path(usuario),
+                    class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
+                    style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+                <% unless usuario == current_user %>
+                  <%= button_to "Remover", usuario_path(usuario), method: :delete,
+                      data: { turbo_confirm: "Tem certeza?" },
+                      class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition cursor-pointer",
+                      style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

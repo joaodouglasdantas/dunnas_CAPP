@@ -1,24 +1,37 @@
-<h1>Tipos de Chamado</h1>
-<%= link_to "Novo Tipo", new_tipos_chamado_path %>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold" style="color: #a78bfa;">Tipos de Chamado</h1>
+  <%= link_to "Novo Tipo", new_tipos_chamado_path,
+      class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition",
+      style: "background-color: #7c3aed;" %>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Título</th>
-      <th>SLA (horas)</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @tipos_chamado.each do |tipo| %>
-      <tr>
-        <td><%= tipo.titulo %></td>
-        <td><%= tipo.sla_horas %></td>
-        <td>
-          <%= link_to "Editar", edit_tipos_chamado_path(tipo) %>
-          <%= button_to "Remover", tipos_chamado_path(tipo), method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
-        </td>
+<div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <table class="w-full">
+    <thead>
+      <tr style="border-bottom: 1px solid #2d4a6b;">
+        <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Título</th>
+        <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">SLA (horas)</th>
+        <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Ações</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @tipos_chamado.each do |tipo| %>
+        <tr style="border-bottom: 1px solid #2d4a6b;">
+          <td class="px-4 py-3 text-sm" style="color: #f1f5f9;"><%= tipo.titulo %></td>
+          <td class="px-4 py-3 text-sm" style="color: #f1f5f9;"><%= tipo.sla_horas %>h</td>
+          <td class="px-4 py-3">
+            <div class="flex gap-2">
+              <%= link_to "Editar", edit_tipos_chamado_path(tipo),
+                  class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
+                  style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+              <%= button_to "Remover", tipos_chamado_path(tipo), method: :delete,
+                  data: { turbo_confirm: "Tem certeza?" },
+                  class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition cursor-pointer",
+                  style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

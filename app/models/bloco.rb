@@ -51,7 +51,22 @@ class Bloco < ApplicationRecord
   end
 
   def regenerar_unidades
-    unidades.destroy_all
-    gerar_unidades
+    novas_identificacoes = []
+    quantidade_andares.times do |andar|
+      numero_andar = andar + 1
+      unidades_por_andar.times do |unidade|
+        numero_unidade = unidade + 1
+        identificacao = "#{numero_andar}#{numero_unidade.to_s.rjust(2, '0')}"
+        novas_identificacoes << identificacao
+        unless unidades.exists?(identificacao: identificacao)
+          unidades.create!(
+            numero_andar: numero_andar,
+            numero_unidade: numero_unidade,
+            identificacao: identificacao
+          )
+        end
+      end
+    end
+    unidades.where.not(identificacao: novas_identificacoes).destroy_all
   end
 end

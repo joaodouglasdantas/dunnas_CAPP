@@ -1,20 +1,25 @@
 <%= form_with model: tipo_chamado, url: tipo_chamado.new_record? ? tipos_chamado_index_path : tipos_chamado_path(tipo_chamado) do |f| %>
   <% if tipo_chamado.errors.any? %>
-    <ul>
-      <% tipo_chamado.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
+    <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5;">
+      <ul class="list-disc list-inside">
+        <% tipo_chamado.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <div>
-    <%= f.label :titulo, "Título" %>
-    <%= f.text_field :titulo %>
+  <div class="mb-4">
+    <%= f.label :titulo, "Título", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+    <%= f.text_field :titulo, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+        style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
   </div>
-  <div>
-    <%= f.label :sla_horas, "SLA (horas)" %>
-    <%= f.number_field :sla_horas, min: 1 %>
+  <div class="mb-6">
+    <%= f.label :sla_horas, "SLA (horas)", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+    <%= f.number_field :sla_horas, min: 1, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+        style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
   </div>
 
-  <%= f.submit %>
+  <%= f.submit class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
+      style: "background-color: #7c3aed; border: none;" %>
 <% end %>

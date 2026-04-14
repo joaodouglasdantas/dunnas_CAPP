@@ -69,6 +69,10 @@ class UsuariosController < ApplicationController
   end
 
   def vincular_tipo_chamado
+    if params[:tipo_chamado_id].blank?
+      redirect_to usuario_path(@usuario), alert: "Selecione um tipo de chamado."
+      return
+    end
     tipo = TipoChamado.find(params[:tipo_chamado_id])
     unless @usuario.tipos_chamado_responsavel.include?(tipo)
       ColaboradorTipoChamado.create!(user: @usuario, tipo_chamado: tipo)

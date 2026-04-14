@@ -1,49 +1,171 @@
-<h1>Chamado #<%= @chamado.id %></h1>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold" style="color: #a78bfa;">Chamado #<%= @chamado.id %></h1>
+  <div class="flex gap-2">
+    <% if current_user.administrador? || current_user.colaborador? %>
+      <%= link_to "Atualizar Status", edit_chamado_path(@chamado),
+          class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition",
+          style: "background-color: #7c3aed;" %>
+    <% end %>
+    <%= link_to "Voltar", chamados_path,
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+  </div>
+</div>
 
-<p><strong>Unidade:</strong> <%= @chamado.unidade.identificacao %></p>
-<p><strong>Tipo:</strong> <%= @chamado.tipo_chamado.titulo %></p>
-<p><strong>Status:</strong> <%= @chamado.status_chamado.nome %></p>
-<p><strong>Descrição:</strong> <%= @chamado.descricao %></p>
-<p><strong>Aberto por:</strong> <%= @chamado.usuario.nome %></p>
-<p><strong>Aberto em:</strong> <%= @chamado.created_at.strftime("%d/%m/%Y %H:%M") %></p>
-<% if @chamado.finalizado_em %>
-  <p><strong>Finalizado em:</strong> <%= @chamado.finalizado_em.strftime("%d/%m/%Y %H:%M") %></p>
-<% end %>
-
-<% if current_user.administrador? || current_user.colaborador? %>
-  <%= link_to "Atualizar Status", edit_chamado_path(@chamado) %>
-<% end %>
-
-<% @comentarios.each do |comentario| %>
-  <div>
-    <strong><%= comentario.usuario.nome %></strong>
-    <span><%= comentario.created_at.strftime("%d/%m/%Y %H:%M") %></span>
-    <p><%= comentario.mensagem %></p>
-    <% if comentario.anexos.attached? %>
-      <% comentario.anexos.each do |anexo| %>
-        <% if anexo.image? %>
-          <%= image_tag url_for(anexo), style: "max-width: 300px" %>
-        <% elsif anexo.video? %>
-          <video width="300" controls>
-            <source src="<%= url_for(anexo) %>">
-          </video>
-        <% end %>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Informações</h2>
+    <div class="space-y-3">
+      <div>
+        <p class="text-xs mb-1" style="color: #94a3b8;">Unidade</p>
+        <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.unidade.identificacao %></p>
+      </div>
+      <div>
+        <p class="text-xs mb-1" style="color: #94a3b8;">Tipo</p>
+        <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.tipo_chamado.titulo %></p>
+      </div>
+      <div>
+        <p class="text-xs mb-1" style="color: #94a3b8;">Status</p>
+        <span class="text-xs px-2 py-1 rounded-full" style="background-color: #2d4a6b; color: #a78bfa;"><%= @chamado.status_chamado.nome %></span>
+      </div>
+      <div>
+        <p class="text-xs mb-1" style="color: #94a3b8;">Aberto por</p>
+        <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.usuario.nome %></p>
+      </div>
+      <div>
+        <p class="text-xs mb-1" style="color: #94a3b8;">Aberto em</p>
+        <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+      </div>
+      <% if @chamado.finalizado_em %>
+        <div>
+          <p class="text-xs mb-1" style="color: #94a3b8;">Finalizado em</p>
+          <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.finalizado_em.strftime("%d/%m/%Y %H:%M") %></p>
+        </div>
       <% end %>
+    </div>
+  </div>
+
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Descrição</h2>
+    <p class="text-sm" style="color: #94a3b8;"><%= @chamado.descricao %></p>
+  </div>
+
+  <% if @chamado.anexos.attached? %>
+    <div>
+      <p class="text-xs mb-2" style="color: #94a3b8;">Anexos</p>
+      <div class="flex flex-wrap gap-2">
+        <% @chamado.anexos.each do |anexo| %>
+          <% if anexo.image? %>
+            <%= image_tag url_for(anexo), class: "rounded-lg", style: "max-width: 150px;" %>
+          <% elsif anexo.video? %>
+            <video class="rounded-lg" width="150" controls>
+              <source src="<%= url_for(anexo) %>">
+            </video>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="rounded-xl overflow-hidden mb-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <div class="px-6 py-4" style="border-bottom: 1px solid #2d4a6b;">
+    <h2 class="text-base font-semibold" style="color: #f1f5f9;">Comentários</h2>
+  </div>
+  <% if @comentarios.any? %>
+    <% @comentarios.each do |comentario| %>
+      <div class="px-6 py-4" style="border-bottom: 1px solid #2d4a6b;">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-sm font-medium" style="color: #a78bfa;"><%= comentario.usuario.nome %></span>
+          <span class="text-xs" style="color: #94a3b8;"><%= comentario.created_at.strftime("%d/%m/%Y %H:%M") %></span>
+        </div>
+        <p class="text-sm" style="color: #f1f5f9;"><%= comentario.mensagem %></p>
+        <% if comentario.anexos.attached? %>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <% comentario.anexos.each do |anexo| %>
+              <% if anexo.image? %>
+                <%= image_tag url_for(anexo), class: "rounded-lg", style: "max-width: 200px;" %>
+              <% elsif anexo.video? %>
+                <video class="rounded-lg" width="200" controls>
+                  <source src="<%= url_for(anexo) %>">
+                </video>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="px-6 py-4 text-sm" style="color: #94a3b8;">Nenhum comentário ainda.</p>
+  <% end %>
+
+  <div class="px-6 py-4">
+    <h3 class="text-sm font-semibold mb-3" style="color: #f1f5f9;">Adicionar Comentário</h3>
+    <%= form_with model: [@chamado, @comentario] do |f| %>
+      <div class="mb-3">
+        <%= f.text_area :mensagem, rows: 3, placeholder: "Digite seu comentário...",
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+      <div class="mb-3">
+        <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*",
+            class: "text-sm",
+            style: "color: #94a3b8;",
+            id: "anexos_input",
+            onchange: "previewAnexos(this)" %>
+        <div id="preview_container" class="flex flex-wrap gap-2 mt-2"></div>
+      </div>
+      <%= f.submit "Comentar",
+          class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
+          style: "background-color: #7c3aed; border: none;" %>
     <% end %>
   </div>
-<% end %>
 
-<h3>Adicionar Comentário</h3>
-<%= form_with model: [@chamado, @comentario] do |f| %>
-  <div>
-    <%= f.label :mensagem %>
-    <%= f.text_area :mensagem, rows: 3 %>
-  </div>
-  <div>
-    <%= f.label :anexos, "Anexos (imagens ou vídeos)" %>
-    <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*" %>
-  </div>
-  <%= f.submit "Comentar" %>
-<% end %>
+  <script>
+    function previewAnexos(input) {
+      const container = document.getElementById('preview_container');
+      container.innerHTML = '';
+      const dt = new DataTransfer();
 
-<%= link_to "Voltar", chamados_path %>
+      Array.from(input.files).forEach((file, index) => {
+        dt.items.add(file);
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = 'position: relative; display: inline-block;';
+        wrapper.dataset.index = index;
+
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.cssText = 'max-width: 120px; border-radius: 8px; border: 1px solid #2d4a6b; display: block;';
+            wrapper.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          const div = document.createElement('div');
+          div.style.cssText = 'background-color: #1e3352; border: 1px solid #2d4a6b; border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: #94a3b8;';
+          div.textContent = '🎥 ' + file.name;
+          wrapper.appendChild(div);
+        }
+
+        const btn = document.createElement('button');
+        btn.textContent = '✕';
+        btn.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;';
+        btn.onclick = (e) => {
+          e.preventDefault();
+          wrapper.remove();
+          const newDt = new DataTransfer();
+          Array.from(container.querySelectorAll('[data-index]')).forEach(el => {
+            const idx = parseInt(el.dataset.index);
+            if (el !== wrapper) newDt.items.add(dt.items[idx].getAsFile());
+          });
+          input.files = newDt.files;
+        };
+
+        wrapper.appendChild(btn);
+        container.appendChild(wrapper);
+      });
+    }
+  </script>
+</div>

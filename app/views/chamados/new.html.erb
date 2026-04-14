@@ -1,26 +1,105 @@
-<h1>Abrir Chamado</h1>
-<%= form_with model: @chamado do |f| %>
-  <% if @chamado.errors.any? %>
-    <ul>
-      <% @chamado.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+<div class="max-w-2xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold" style="color: #a78bfa;">Abrir Chamado</h1>
+    <%= link_to "Voltar", chamados_path,
+        class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
+        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+  </div>
+
+  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+    <%= form_with model: @chamado do |f| %>
+      <% if @chamado.errors.any? %>
+        <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5;">
+          <ul class="list-disc list-inside">
+            <% @chamado.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
       <% end %>
-    </ul>
-  <% end %>
 
-  <div>
-    <%= f.label :unidade_id, "Unidade" %>
-    <%= f.select :unidade_id, @unidades.map { |u| [u.identificacao, u.id] } %>
-  </div>
-  <div>
-    <%= f.label :tipo_chamado_id, "Tipo de Chamado" %>
-    <%= f.select :tipo_chamado_id, @tipos.map { |t| [t.titulo, t.id] } %>
-  </div>
-  <div>
-    <%= f.label :descricao, "Descrição" %>
-    <%= f.text_area :descricao, rows: 4 %>
-  </div>
+      <div class="mb-4">
+        <%= f.label :unidade_id, "Unidade", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.select :unidade_id, @unidades.map { |u| [u.identificacao, u.id] },
+            { prompt: "Selecione uma unidade" },
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
 
-  <%= f.submit "Abrir Chamado" %>
-<% end %>
-<%= link_to "Voltar", chamados_path %>
+      <div class="mb-4">
+        <%= f.label :tipo_chamado_id, "Tipo de Chamado", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.select :tipo_chamado_id, @tipos.map { |t| [t.titulo, t.id] },
+            { prompt: "Selecione um tipo" },
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.label :descricao, "Descrição", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.text_area :descricao, rows: 4, placeholder: "Descreva o problema...",
+            class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
+            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.label :anexos, "Anexos (opcional)", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*",
+            id: "chamado_anexos_input",
+            onchange: "previewChamadoAnexos(this)",
+            class: "text-sm", style: "color: #94a3b8;" %>
+        <div id="chamado_preview_container" class="flex flex-wrap gap-2 mt-2"></div>
+      </div>
+
+      <script>
+        function previewChamadoAnexos(input) {
+          const container = document.getElementById('chamado_preview_container');
+          container.innerHTML = '';
+          Array.from(input.files).forEach((file, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'position: relative; display: inline-block;';
+            wrapper.dataset.index = index;
+
+            if (file.type.startsWith('image/')) {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.cssText = 'max-width: 120px; border-radius: 8px; border: 1px solid #2d4a6b; display: block;';
+                wrapper.appendChild(img);
+              };
+              reader.readAsDataURL(file);
+            } else {
+              const div = document.createElement('div');
+              div.style.cssText = 'background-color: #1e3352; border: 1px solid #2d4a6b; border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: #94a3b8;';
+              div.textContent = '🎥 ' + file.name;
+              wrapper.appendChild(div);
+            }
+
+            const btn = document.createElement('button');
+            btn.textContent = '✕';
+            btn.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
+            btn.onclick = (e) => {
+              e.preventDefault();
+              wrapper.remove();
+              const newDt = new DataTransfer();
+              Array.from(container.querySelectorAll('[data-index]')).forEach(el => {
+                if (el !== wrapper) {
+                  const idx = parseInt(el.dataset.index);
+                  newDt.items.add(input.files[idx]);
+                }
+              });
+              input.files = newDt.files;
+            };
+
+            wrapper.appendChild(btn);
+            container.appendChild(wrapper);
+          });
+        }
+      </script>
+
+      <%= f.submit "Abrir Chamado",
+          class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
+          style: "background-color: #7c3aed; border: none;" %>
+    <% end %>
+  </div>
+</div>

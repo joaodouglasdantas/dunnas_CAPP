@@ -1,28 +1,48 @@
-<h1>Blocos</h1>
-<%= link_to "Novo Bloco", new_bloco_path %>
-<table>
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Andares</th>
-      <th>Unidades por andar</th>
-      <th>Total de unidades</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @blocos.each do |bloco| %>
-      <tr>
-        <td><%= bloco.nome %></td>
-        <td><%= bloco.quantidade_andares %></td>
-        <td><%= bloco.unidades_por_andar %></td>
-        <td><%= bloco.unidades.count %></td>
-        <td>
-          <%= link_to "Ver", bloco %>
-          <%= link_to "Editar", edit_bloco_path(bloco) %>
-          <%= button_to "Remover", bloco, method: :delete, data: { turbo_confirm: "Tem certeza?" } %>
-        </td>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+  <h1 style="color: #a78bfa; font-size: 1.5rem; font-weight: bold;">Blocos</h1>
+  <%= link_to "Novo Bloco", new_bloco_path,
+      style: "background-color: #7c3aed; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.875rem;",
+      onmouseover: "this.style.backgroundColor='#6d28d9'",
+      onmouseout: "this.style.backgroundColor='#7c3aed'" %>
+</div>
+
+<div style="background-color: #1a2e4a; border: 1px solid #2d4a6b; border-radius: 12px; overflow: hidden;">
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="border-bottom: 1px solid #2d4a6b;">
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Nome</th>
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Andares</th>
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Unidades por andar</th>
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Total de unidades</th>
+        <th style="padding: 12px 16px; text-align: left; color: #94a3b8; font-size: 0.875rem; font-weight: 500;">Ações</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @blocos.each do |bloco| %>
+        <tr style="border-bottom: 1px solid #2d4a6b;" onmouseover="this.style.backgroundColor='#1e3352'" onmouseout="this.style.backgroundColor='transparent'">
+          <td style="padding: 12px 16px; color: #f1f5f9;"><%= bloco.nome %></td>
+          <td style="padding: 12px 16px; color: #f1f5f9;"><%= bloco.quantidade_andares %></td>
+          <td style="padding: 12px 16px; color: #f1f5f9;"><%= bloco.unidades_por_andar %></td>
+          <td style="padding: 12px 16px; color: #f1f5f9;"><%= bloco.unidades.count %></td>
+          <td style="padding: 12px 16px;">
+            <div style="display: flex; gap: 8px;">
+              <%= link_to "Ver", bloco,
+                  style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9; padding: 4px 12px; border-radius: 6px; text-decoration: none; font-size: 0.875rem;",
+                  onmouseover: "this.style.backgroundColor='#7c3aed'; this.style.borderColor='#7c3aed'",
+                  onmouseout: "this.style.backgroundColor='#1e3352'; this.style.borderColor='#2d4a6b'" %>
+              <%= link_to "Editar", edit_bloco_path(bloco),
+                  style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9; padding: 4px 12px; border-radius: 6px; text-decoration: none; font-size: 0.875rem;",
+                  onmouseover: "this.style.backgroundColor='#7c3aed'; this.style.borderColor='#7c3aed'",
+                  onmouseout: "this.style.backgroundColor='#1e3352'; this.style.borderColor='#2d4a6b'" %>
+              <%= button_to "Remover", bloco_path(bloco), method: :delete,
+                  data: { turbo_confirm: "Tem certeza?" },
+                  style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444; padding: 4px 12px; border-radius: 6px; font-size: 0.875rem; cursor: pointer;",
+                  onmouseover: "this.style.backgroundColor='#ef4444'; this.style.color='white'",
+                  onmouseout: "this.style.backgroundColor='#1e3352'; this.style.color='#ef4444'" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
