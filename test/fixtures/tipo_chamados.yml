@@ -1,0 +1,11 @@
+manutencao:
+  titulo: Manutenção
+  sla_horas: 24
+
+limpeza:
+  titulo: Limpeza
+  sla_horas: 12
+
+seguranca:
+  titulo: Segurança
+  sla_horas: 8

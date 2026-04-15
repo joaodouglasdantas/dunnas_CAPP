@@ -7,13 +7,12 @@ class StatusChamadoTest < ActiveSupport::TestCase
   end
 
   test "deve existir apenas um status padrão" do
-    StatusChamado.create!(nome: "Aberto", padrao: true)
     status_duplicado = StatusChamado.new(nome: "Novo", padrao: true)
     assert_not status_duplicado.valid?
   end
 
   test "nao deve permitir deletar status padrao" do
-    status = StatusChamado.create!(nome: "Aberto", padrao: true)
+    status = status_chamados(:aberto)
     assert_no_difference "StatusChamado.count" do
       status.destroy
     end
@@ -21,14 +20,13 @@ class StatusChamadoTest < ActiveSupport::TestCase
   end
 
   test "nao deve permitir desmarcar unico status padrao" do
-    status = StatusChamado.create!(nome: "Aberto", padrao: true)
+    status = status_chamados(:aberto)
     status.update(padrao: false)
     assert status.errors[:base].any?
   end
 
   test "deve permitir deletar status nao padrao sem chamados" do
-    StatusChamado.create!(nome: "Aberto", padrao: true)
-    status = StatusChamado.create!(nome: "Em andamento", padrao: false)
+    status = status_chamados(:em_andamento)
     assert_difference "StatusChamado.count", -1 do
       status.destroy
     end

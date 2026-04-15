@@ -1,0 +1,11 @@
+aberto:
+  nome: Aberto
+  padrao: true
+
+em_andamento:
+  nome: Em andamento
+  padrao: false
+
+concluido:
+  nome: Concluído
+  padrao: false

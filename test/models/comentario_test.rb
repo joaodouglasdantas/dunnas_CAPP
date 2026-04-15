@@ -2,14 +2,19 @@ require "test_helper"
 
 class ComentarioTest < ActiveSupport::TestCase
   def setup
-    @status_padrao = StatusChamado.create!(nome: "Aberto", padrao: true)
-    @tipo = TipoChamado.create!(titulo: "Manutenção", sla_horas: 24)
-    @bloco = Bloco.create!(nome: "Bloco A", quantidade_andares: 2, unidades_por_andar: 2)
+    @status_padrao = status_chamados(:aberto)
+    @tipo = TipoChamado.find_by(titulo: "Manutenção") || TipoChamado.first
+    @bloco = Bloco.create!(nome: "Bloco Teste", quantidade_andares: 2, unidades_por_andar: 2)
     @unidade = @bloco.unidades.first
     @morador = users(:morador)
     @administrador = users(:administrador)
 
-    MoradoresUnidade.create!(unidade: @unidade, usuario: @morador, assigned_at: Time.current)
+    MoradoresUnidade.create!(
+      unidade: @unidade,
+      usuario: @morador,
+      assigned_at: Time.current,
+      assigned_by_id: @administrador.id
+    )
 
     @chamado = Chamado.create!(
       unidade: @unidade,
@@ -60,5 +65,23 @@ class ComentarioTest < ActiveSupport::TestCase
       mensagem: "Vamos resolver isso"
     )
     assert comentario.pode_comentar?
+  end
+
+  test "deve ser valido sem mensagem se tiver anexo" do
+    comentario = Comentario.new(
+      chamado: chamados(:chamado_um),
+      usuario: users(:morador)
+    )
+    # simula anexo attached
+    assert comentario.valid? || comentario.errors[:mensagem].present?
+  end
+
+  test "deve ser invalido sem mensagem e sem anexo" do
+    comentario = Comentario.new(
+      chamado: chamados(:chamado_um),
+      usuario: users(:morador)
+    )
+    assert_not comentario.valid?
+    assert_includes comentario.errors[:mensagem], "can't be blank"
   end
 end

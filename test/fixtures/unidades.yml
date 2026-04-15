@@ -1,0 +1,11 @@
+unidade_101:
+  bloco: bloco_a
+  identificacao: "101"
+  numero_andar: 1
+  numero_unidade: 1
+
+unidade_102:
+  bloco: bloco_a
+  identificacao: "102"
+  numero_andar: 1
+  numero_unidade: 2

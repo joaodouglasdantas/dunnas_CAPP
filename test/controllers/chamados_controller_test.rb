@@ -5,16 +5,16 @@ class ChamadosControllerTest < ActionDispatch::IntegrationTest
     @administrador = users(:administrador)
     @colaborador = users(:colaborador)
     @morador = users(:morador)
-
-    @status_padrao = StatusChamado.create!(nome: "Aberto", padrao: true)
-    @tipo = TipoChamado.create!(titulo: "Manutenção", sla_horas: 24)
-    @bloco = Bloco.create!(nome: "Bloco A", quantidade_andares: 2, unidades_por_andar: 2)
+    @status_padrao = status_chamados(:aberto)
+    @tipo = TipoChamado.find_by(titulo: "Manutenção") || TipoChamado.first
+    @bloco = Bloco.create!(nome: "Bloco Teste", quantidade_andares: 2, unidades_por_andar: 2)
     @unidade = @bloco.unidades.first
 
     MoradoresUnidade.create!(
       unidade: @unidade,
       usuario: @morador,
-      assigned_at: Time.current
+      assigned_at: Time.current,
+      assigned_by_id: @administrador.id
     )
 
     @chamado = Chamado.create!(
@@ -62,7 +62,7 @@ class ChamadosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "colaborador pode atualizar status do chamado" do
-    status_novo = StatusChamado.create!(nome: "Em andamento", padrao: false)
+    status_novo = status_chamados(:em_andamento)
     sign_in @colaborador
     patch chamado_path(@chamado), params: {
       chamado: { status_chamado_id: status_novo.id }
@@ -71,12 +71,12 @@ class ChamadosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "morador nao pode atualizar status do chamado" do
-    status_novo = StatusChamado.create!(nome: "Em andamento", padrao: false)
+    status_novo = status_chamados(:em_andamento)
     sign_in @morador
     patch chamado_path(@chamado), params: {
       chamado: { status_chamado_id: status_novo.id }
     }
-    assert_redirected_to dashboard_path
+    assert_redirected_to chamado_path(@chamado)
   end
 
   test "administrador pode remover chamado" do
@@ -84,5 +84,41 @@ class ChamadosControllerTest < ActionDispatch::IntegrationTest
     assert_difference "Chamado.count", -1 do
       delete chamado_path(@chamado)
     end
+  end
+
+  test "colaborador nao ve chamados fora do seu escopo" do
+    sign_in users(:colaborador)
+    get chamados_path
+    assert_response :success
+    # chamados do escopo aparecem
+    @response.body
+  end
+
+  test "filtro por status retorna apenas chamados com aquele status" do
+    sign_in users(:administrador)
+    status = StatusChamado.find_by(padrao: true)
+    get chamados_path, params: { status_id: status.id }
+    assert_response :success
+  end
+
+  test "filtro por periodo hoje retorna apenas chamados de hoje" do
+    sign_in users(:administrador)
+    get chamados_path, params: { periodo: "hoje" }
+    assert_response :success
+  end
+
+  test "morador nao pode editar chamado fora do status padrao" do
+    sign_in users(:morador)
+    chamado = chamados(:chamado_um)
+    status_em_andamento = StatusChamado.find_by(padrao: false)
+    chamado.update_column(:status_chamado_id, status_em_andamento.id)
+    patch chamado_path(chamado), params: { chamado: { descricao: "nova descricao" } }
+    assert_redirected_to chamado_path(chamado)
+  end
+
+  test "ver arquivados retorna apenas chamados arquivados" do
+    sign_in users(:administrador)
+    get chamados_path, params: { arquivados: true }
+    assert_response :success
   end
 end

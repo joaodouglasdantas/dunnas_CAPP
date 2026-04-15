@@ -51,7 +51,7 @@
 <div class="flex justify-between items-center mb-6">
   <h1 class="text-2xl font-bold" style="color: #a78bfa;">Chamado #<%= @chamado.id %></h1>
   <div class="flex gap-2">
-    <% if current_user.administrador? || current_user.colaborador? %>
+    <% if current_user.administrador? || (current_user.colaborador? && current_user.tipos_chamado_responsavel.include?(@chamado.tipo_chamado)) %>
       <%= link_to "Atualizar Status", edit_chamado_path(@chamado),
           class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition",
           style: "background-color: #7c3aed;" %>

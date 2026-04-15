@@ -48,15 +48,33 @@ class Chamado < ApplicationRecord
   end
 
   def log_atualizacao
+    mudancas = []
+
     if saved_change_to_status_chamado_id?
-      LogAuditorium.registrar(
-        Current.usuario,
-        "Chamado ##{id} teve status alterado para #{status_chamado.nome} por #{Current.usuario&.nome}"
-      )
+      mudancas << "status alterado para '#{status_chamado.nome}'"
     end
+
+    if saved_change_to_descricao?
+      mudancas << "descrição atualizada"
+    end
+
+    if saved_change_to_unidade_id?
+      mudancas << "unidade alterada para #{unidade.identificacao}"
+    end
+
+    if saved_change_to_tipo_chamado_id?
+      mudancas << "tipo alterado para '#{tipo_chamado.titulo}'"
+    end
+
+    return if mudancas.empty?
+
+    LogAuditorium.registrar(
+      Current.usuario,
+      "Chamado ##{id} atualizado — #{mudancas.join(', ')}"
+    )
   end
 
   def log_remocao
-    LogAuditorium.registrar(usuario, "Chamado ##{id} removido da unidade #{unidade.identificacao}")
+    LogAuditorium.registrar(Current.usuario, "Chamado ##{id} removido da unidade #{unidade.identificacao}")
   end
 end

@@ -1,0 +1,5 @@
+colaborador_manutencao:
+  user_id: <%= ActiveRecord::FixtureSet.identify(:colaborador) %>
+  tipo_chamado_id: <%= ActiveRecord::FixtureSet.identify(:manutencao) %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

@@ -1,0 +1,16 @@
+chamado_um:
+  descricao: Chamado de teste
+  unidade: unidade_101
+  usuario: morador
+  tipo_chamado: manutencao
+  status_chamado: aberto
+  arquivado: false
+
+chamado_dois:
+  descricao: Chamado concluido
+  unidade: unidade_101
+  usuario: morador
+  tipo_chamado: manutencao
+  status_chamado: concluido
+  arquivado: false
+  finalizado_em: <%= 31.days.ago %>

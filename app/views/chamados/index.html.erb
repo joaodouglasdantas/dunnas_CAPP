@@ -99,10 +99,12 @@
                 <%= link_to "Ver", chamado,
                   class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
                   style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
-                <% if current_user.administrador? || current_user.colaborador? || chamado.usuario == current_user %>
+                <% if current_user.administrador? || 
+                  (current_user.colaborador? && current_user.tipos_chamado_responsavel.include?(chamado.tipo_chamado)) || 
+                  (chamado.usuario == current_user && chamado.status_chamado.padrao?) %>
                   <%= link_to "Editar", edit_chamado_path(chamado),
-                      class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
-                      style: "background-color: #1e3352; border: 1px solid #a78bfa; color: #a78bfa;" %>
+                    class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
+                    style: "background-color: #1e3352; border: 1px solid #a78bfa; color: #a78bfa;" %>
                 <% end %>
                 <% if current_user.administrador? %>
                   <%= button_to "Remover", chamado_path(chamado), method: :delete,

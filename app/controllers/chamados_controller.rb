@@ -3,23 +3,25 @@ class ChamadosController < ApplicationController
 
   def index
     if current_user.administrador?
-      base = params[:arquivados].present? ? Chamado.arquivados : Chamado.ativos
-      @chamados = base.includes(:unidade, :tipo_chamado, :status_chamado, :usuario)
+      @chamados = Chamado.ativos.includes(:unidade, :tipo_chamado, :status_chamado, :usuario)
+      @tipos_list = TipoChamado.all
     elsif current_user.colaborador?
       tipos_ids = current_user.tipos_chamado_responsavel.pluck(:id)
-      base = params[:arquivados].present? ? Chamado.arquivados : Chamado.ativos
-      @chamados = base.where(tipo_chamado_id: tipos_ids)
-                      .includes(:unidade, :tipo_chamado, :status_chamado, :usuario)
+      unidades_ids = current_user.unidades.pluck(:id)
+
+      @chamados = Chamado.ativos
+                         .where("tipo_chamado_id IN (?) OR unidade_id IN (?)", tipos_ids, unidades_ids)
+                         .includes(:unidade, :tipo_chamado, :status_chamado, :usuario)
+      @tipos_list = current_user.tipos_chamado_responsavel
     else
-      base = params[:arquivados].present? ? Chamado.arquivados : Chamado.ativos
-      @chamados = base.joins(unidade: :moradores_unidades)
-                      .where(moradores_unidades: { user_id: current_user.id })
-                      .includes(:unidade, :tipo_chamado, :status_chamado)
+      @chamados = Chamado.ativos.joins(unidade: :moradores_unidades)
+                         .where(moradores_unidades: { user_id: current_user.id })
+                         .includes(:unidade, :tipo_chamado, :status_chamado)
+      @tipos_list = TipoChamado.all
     end
 
     @chamados = aplicar_filtros(@chamados)
     @status_list = StatusChamado.all
-    @tipos_list = TipoChamado.all
     @blocos_list = Bloco.all if current_user.administrador?
     @mostrando_arquivados = params[:arquivados].present?
   end
@@ -111,7 +113,9 @@ class ChamadosController < ApplicationController
     end
 
     anexo = @chamado.anexos.find(params[:anexo_id])
+    nome_arquivo = anexo.filename.to_s
     anexo.purge
+    LogAuditorium.registrar(current_user, "Anexo '#{nome_arquivo}' removido do chamado ##{@chamado.id}")
     redirect_to edit_chamado_path(@chamado), notice: "Anexo removido com sucesso."
   end
 

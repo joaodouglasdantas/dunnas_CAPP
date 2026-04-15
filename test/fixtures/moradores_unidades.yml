@@ -1,0 +1,11 @@
+morador_unidade_101:
+  unidade_id: <%= ActiveRecord::FixtureSet.identify(:unidade_101) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:morador) %>
+  assigned_at: <%= Time.current %>
+  assigned_by_id: <%= ActiveRecord::FixtureSet.identify(:administrador) %>
+
+morador_unidade_102:
+  unidade_id: <%= ActiveRecord::FixtureSet.identify(:unidade_102) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:morador_dois) %>
+  assigned_at: <%= Time.current %>
+  assigned_by_id: <%= ActiveRecord::FixtureSet.identify(:administrador) %>
