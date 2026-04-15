@@ -78,6 +78,13 @@ class ChamadosController < ApplicationController
       redirect_to chamados_path, alert: "Sem permissão." and return
     end
 
+    if current_user.colaborador?
+      concluido = StatusChamado.find_by(nome: "Concluído")
+      if @chamado.status_chamado == concluido
+        redirect_to chamado_path(@chamado), alert: "Não é possível alterar o status de um chamado já concluído." and return
+      end
+    end
+
     params_permitidos = if current_user.administrador? || current_user.colaborador?
       chamado_update_params
     else

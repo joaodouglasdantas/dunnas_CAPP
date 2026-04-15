@@ -15,7 +15,7 @@
           <tr style="border-bottom: 1px solid #2d4a6b;">
             <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: #94a3b8;"><%= log.created_at.strftime("%d/%m/%Y %H:%M") %></td>
             <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: #a78bfa;"><%= log.usuario&.nome || "Sistema" %></td>
-            <td class="px-4 py-3 text-sm" 
+            <td class="px-4 py-3 text-sm"
                 title="<%= log.acao %>"
                 style="color: #f1f5f9; max-width: 600px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
               <%= log.acao %>

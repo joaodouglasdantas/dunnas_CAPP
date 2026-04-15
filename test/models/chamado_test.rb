@@ -101,4 +101,15 @@ class ChamadoTest < ActiveSupport::TestCase
     Chamado.arquivar_antigos!
     assert chamado.reload.arquivado
   end
+
+  test "registra bloco junto com unidade no log de criacao" do
+    chamado = Chamado.create!(
+      unidade: @unidade,
+      usuario: @usuario,
+      tipo_chamado: @tipo,
+      descricao: "Teste de log"
+    )
+    log = LogAuditorium.last
+    assert_includes log.acao, @unidade.bloco.nome
+  end
 end

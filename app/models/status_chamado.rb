@@ -5,8 +5,8 @@ class StatusChamado < ApplicationRecord
   validates :padrao, uniqueness: { conditions: -> { where(padrao: true) },
     message: "já existe um status padrão definido" }
 
-  before_destroy :verificar_se_pode_deletar
   before_destroy :log_remocao
+  before_destroy :verificar_se_pode_deletar
   before_update :verificar_remocao_padrao
 
   after_create :log_criacao
@@ -16,25 +16,28 @@ class StatusChamado < ApplicationRecord
 
   def verificar_se_pode_deletar
     if padrao?
-      errors.add(:base, "Não é possível excluir o status padrão do sistema.")
+      errors.add(:base, "Não é possível remover o status padrão.")
       throw :abort
     end
-
+    if nome.downcase == "concluído"
+      errors.add(:base, "O status 'Concluído' não pode ser removido.")
+      throw :abort
+    end
     if chamados.any?
-      errors.add(:base, "Não é possível excluir um status que está sendo usado em chamados.")
+      errors.add(:base, "Não é possível remover um status que possui chamados vinculados.")
+      throw :abort
+    end
+  end
+
+  def verificar_remocao_padrao
+    if padrao_changed? && !padrao? && StatusChamado.where(padrao: true).count == 1
+      errors.add(:base, "Deve existir pelo menos um status padrão.")
       throw :abort
     end
   end
 
   def log_remocao
     LogAuditorium.registrar(Current.usuario, "Status '#{nome}' removido do sistema")
-  end
-
-  def verificar_remocao_padrao
-    if padrao_changed? && !padrao? && StatusChamado.where(padrao: true).count <= 1
-      errors.add(:base, "Não é possível remover o status padrão sem definir outro como padrão antes.")
-      throw :abort
-    end
   end
 
   def log_criacao

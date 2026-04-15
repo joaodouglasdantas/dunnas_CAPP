@@ -31,4 +31,12 @@ class StatusChamadoTest < ActiveSupport::TestCase
       status.destroy
     end
   end
+
+  test "nao deve permitir deletar status concluido" do
+    status = status_chamados(:concluido)
+    assert_no_difference "StatusChamado.count" do
+      status.destroy
+    end
+    assert status.errors[:base].any?
+  end
 end

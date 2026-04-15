@@ -120,14 +120,18 @@
       <div class="space-y-2 mb-4">
         <% @usuario.tipos_chamado_responsavel.each do |tipo| %>
           <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid #2d4a6b;">
-            <div>
-              <span class="text-sm" style="color: #f1f5f9;"><%= tipo.titulo %></span>
-              <span class="text-xs ml-2" style="color: #94a3b8;">SLA: <%= tipo.sla_horas %>h</span>
+            <div class="flex items-center gap-2 py-2">
+              <span class="text-sm flex-1"
+                    title="<%= tipo.titulo %>"
+                    style="color: #f1f5f9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
+                <%= tipo.titulo.truncate(40) %>
+              </span>
+              <span class="text-xs flex-shrink-0" style="color: #94a3b8;">SLA: <%= tipo.sla_horas %>h</span>
             </div>
             <%= button_to "Desvincular", desvincular_tipo_chamado_usuario_path(@usuario, tipo_chamado_id: tipo.id), method: :delete,
-                data: { turbo_confirm: "Tem certeza?" },
-                class: "text-xs px-2 py-1 rounded cursor-pointer hover:opacity-75",
-                style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+              data: { turbo_confirm: "Tem certeza?" },
+              class: "text-xs px-2 py-1 rounded cursor-pointer hover:opacity-75",
+              style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
           </div>
         <% end %>
       </div>
@@ -138,13 +142,13 @@
     <%= form_with url: vincular_tipo_chamado_usuario_path(@usuario), method: :post do |f| %>
       <div class="flex gap-2">
         <%= select_tag :tipo_chamado_id,
-            options_from_collection_for_select(@todos_tipos, :id, :titulo),
-            prompt: "Selecione um tipo",
-            class: "flex-1 rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+          options_for_select(@todos_tipos.map { |t| [t.titulo.truncate(40), t.id] }, nil),
+          prompt: "Selecione um tipo",
+          class: "flex-1 rounded-lg px-3 py-2 text-sm outline-none",
+          style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
         <%= f.submit "Vincular",
-            class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
-            style: "background-color: #7c3aed; border: none;" %>
+          class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
+          style: "background-color: #7c3aed; border: none;" %>
       </div>
     <% end %>
   </div>
