@@ -2,6 +2,7 @@ services:
   - type: web
     name: meu-sistema-rails
     env: docker
+    plan: free          # ← adiciona essa linha
     dockerfilePath: ./Dockerfile
     preDeployCommand: "bundle exec rails db:migrate"
     envVars:
