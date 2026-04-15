@@ -84,7 +84,7 @@
           <th class="px-4 py-3 text-left text-sm font-medium w-32" style="color: #94a3b8;">Status</th>
           <th class="px-4 py-3 text-left text-sm font-medium hidden md:table-cell" style="color: #94a3b8;">Descrição</th>
           <th class="px-4 py-3 text-left text-sm font-medium hidden md:table-cell w-36" style="color: #94a3b8;">Aberto em</th>
-          <th class="px-4 py-3 text-left text-sm font-medium w-36" style="color: #94a3b8;">Ações</th>
+          <th class="px-4 py-3 text-left text-sm font-medium w-44" style="color: #94a3b8;">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -119,8 +119,8 @@
             <td class="px-4 py-3 text-sm hidden md:table-cell w-36" style="color: #94a3b8;">
               <%= chamado.created_at.strftime("%d/%m/%Y %H:%M") %>
             </td>
-            <td class="px-4 py-3 w-36">
-              <div class="flex gap-2 flex-nowrap">
+            <td class="px-4 py-3 w-44">
+              <div class="flex gap-2 flex-wrap">
                 <%= link_to "Ver", chamado,
                   class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
                   style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
