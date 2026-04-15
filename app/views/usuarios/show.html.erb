@@ -25,40 +25,42 @@
     </div>
   </div>
 
-  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Unidades Vinculadas</h2>
-    <% if @unidades_vinculadas.any? %>
-      <div class="space-y-2 mb-4">
-        <% @unidades_vinculadas.each do |unidade| %>
-          <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid #2d4a6b;">
-            <span class="text-sm" style="color: #f1f5f9;"><%= unidade.bloco.nome %> — <%= unidade.identificacao %></span>
-            <%= button_to "Desvincular", desvincular_unidade_usuario_path(@usuario, unidade_id: unidade.id), method: :delete,
-                data: { turbo_confirm: "Tem certeza?" },
-                class: "text-xs px-2 py-1 rounded cursor-pointer hover:opacity-75",
-                style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="text-sm mb-4" style="color: #94a3b8;">Nenhuma unidade vinculada.</p>
-    <% end %>
+  <% unless @usuario.colaborador? %>
+    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+      <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Unidades Vinculadas</h2>
+      <% if @unidades_vinculadas.any? %>
+        <div class="space-y-2 mb-4">
+          <% @unidades_vinculadas.each do |unidade| %>
+            <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid #2d4a6b;">
+              <span class="text-sm" style="color: #f1f5f9;"><%= unidade.bloco.nome %> — <%= unidade.identificacao %></span>
+              <%= button_to "Desvincular", desvincular_unidade_usuario_path(@usuario, unidade_id: unidade.id), method: :delete,
+                  data: { turbo_confirm: "Tem certeza?" },
+                  class: "text-xs px-2 py-1 rounded cursor-pointer hover:opacity-75",
+                  style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-sm mb-4" style="color: #94a3b8;">Nenhuma unidade vinculada.</p>
+      <% end %>
 
-    <%= form_with url: vincular_unidade_usuario_path(@usuario), method: :post do |f| %>
-      <div class="flex gap-2">
-        <%= select_tag :unidade_id,
-            grouped_options_for_select(
-              @todas_unidades.group_by { |u| u.bloco.nome }
-                             .transform_values { |unidades| unidades.map { |u| [u.identificacao, u.id] } }
-            ),
-            prompt: "Selecione uma unidade",
-            class: "flex-1 rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
-        <%= f.submit "Vincular",
-            class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
-            style: "background-color: #7c3aed; border: none;" %>
-      </div>
-    <% end %>
-  </div>
+      <%= form_with url: vincular_unidade_usuario_path(@usuario), method: :post do |f| %>
+        <div class="flex gap-2">
+          <%= select_tag :unidade_id,
+              grouped_options_for_select(
+                @todas_unidades.group_by { |u| u.bloco.nome }
+                              .transform_values { |unidades| unidades.map { |u| [u.identificacao, u.id] } }
+              ),
+              prompt: "Selecione uma unidade",
+              class: "flex-1 rounded-lg px-3 py-2 text-sm outline-none",
+              style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+          <%= f.submit "Vincular",
+              class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
+              style: "background-color: #7c3aed; border: none;" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <% if @usuario.colaborador? %>

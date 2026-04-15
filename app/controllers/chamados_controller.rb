@@ -7,10 +7,7 @@ class ChamadosController < ApplicationController
       @tipos_list = TipoChamado.all
     elsif current_user.colaborador?
       tipos_ids = current_user.tipos_chamado_responsavel.pluck(:id)
-      unidades_ids = current_user.unidades.pluck(:id)
-
-      @chamados = Chamado.ativos
-                         .where("tipo_chamado_id IN (?) OR unidade_id IN (?)", tipos_ids, unidades_ids)
+      @chamados = Chamado.ativos.where(tipo_chamado_id: tipos_ids)
                          .includes(:unidade, :tipo_chamado, :status_chamado, :usuario)
       @tipos_list = current_user.tipos_chamado_responsavel
     else
@@ -32,12 +29,20 @@ class ChamadosController < ApplicationController
   end
 
   def new
+    if current_user.colaborador?
+      redirect_to chamados_path, alert: "Colaboradores não podem abrir chamados."
+      return
+    end
     @chamado = Chamado.new
     @unidades = current_user.unidades
     @tipos = TipoChamado.all
   end
 
   def create
+    if current_user.colaborador?
+      redirect_to chamados_path, alert: "Colaboradores não podem abrir chamados."
+      return
+    end
     @chamado = Chamado.new(chamado_params)
     @chamado.usuario = current_user
     if @chamado.save

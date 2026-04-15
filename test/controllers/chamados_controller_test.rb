@@ -121,4 +121,18 @@ class ChamadosControllerTest < ActionDispatch::IntegrationTest
     get chamados_path, params: { arquivados: true }
     assert_response :success
   end
+
+  test "colaborador nao pode criar chamado" do
+    sign_in @colaborador
+    assert_no_difference "Chamado.count" do
+      post chamados_path, params: {
+        chamado: {
+          unidade_id: @unidade.id,
+          tipo_chamado_id: @tipo.id,
+          descricao: "Tentativa indevida"
+        }
+      }
+    end
+    assert_redirected_to chamados_path
+  end
 end
