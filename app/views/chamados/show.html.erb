@@ -22,13 +22,13 @@
 
   .comentarios-scroll::-webkit-scrollbar-thumb,
   .descricao-scroll::-webkit-scrollbar-thumb {
-    background-color: #2d4a6b;
+    background-color: var(--border);
     border-radius: 999px;
   }
 
   .comentarios-scroll::-webkit-scrollbar-thumb:hover,
   .descricao-scroll::-webkit-scrollbar-thumb:hover {
-    background-color: #7c3aed;
+    background-color: var(--purple);
   }
 
   .anexo-img {
@@ -49,78 +49,78 @@
 </style>
 
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold" style="color: #a78bfa;">Chamado #<%= @chamado.id %></h1>
+  <h1 class="text-2xl font-bold" style="color: var(--purple-light);">Chamado #<%= @chamado.id %></h1>
   <div class="flex gap-2">
     <% if current_user.administrador? || (current_user.colaborador? && current_user.tipos_chamado_responsavel.include?(@chamado.tipo_chamado)) %>
       <%= link_to "Atualizar Status", edit_chamado_path(@chamado),
           class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition",
-          style: "background-color: #7c3aed;" %>
+          style: "background-color: var(--purple);" %>
     <% elsif @chamado.usuario == current_user && @chamado.status_chamado.padrao? %>
       <%= link_to "Editar", edit_chamado_path(@chamado),
           class: "px-4 py-2 rounded-lg text-sm font-medium hover:opacity-75 transition",
-          style: "background-color: #1e3352; border: 1px solid #a78bfa; color: #a78bfa;" %>
+          style: "background-color: var(--bg-row); border: 1px solid var(--purple-light); color: var(--purple-light);" %>
     <% end %>
     <%= link_to "Voltar", chamados_path,
         class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
-        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
   </div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Informações</h2>
+  <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+    <h2 class="text-base font-semibold mb-4" style="color: var(--text);">Informações</h2>
     <div class="space-y-3">
       <div>
-        <p class="text-xs mb-1" style="color: #94a3b8;">Unidade</p>
+        <p class="text-xs mb-1" style="color: var(--text-muted);">Unidade</p>
         <p class="text-sm"
           title="<%= @chamado.unidade.identificacao %> — <%= @chamado.unidade.bloco.nome %>"
-          style="color: #f1f5f9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
+          style="color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
           <%= "#{@chamado.unidade.identificacao} — #{@chamado.unidade.bloco.nome.truncate(30)}" %>
         </p>
       </div>
       <div>
-        <p class="text-xs mb-1" style="color: #94a3b8;">Tipo</p>
+        <p class="text-xs mb-1" style="color: var(--text-muted);">Tipo</p>
         <p class="text-sm"
           title="<%= @chamado.tipo_chamado.titulo %>"
-          style="color: #f1f5f9; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
+          style="color: var(--text); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
           <%= @chamado.tipo_chamado.titulo %>
         </p>
       </div>
       <div>
-        <p class="text-xs mb-1" style="color: #94a3b8;">Status</p>
+        <p class="text-xs mb-1" style="color: var(--text-muted);">Status</p>
         <span class="text-xs px-2 py-1 rounded-full"
               title="<%= @chamado.status_chamado.nome %>"
-              style="background-color: #2d4a6b; color: #a78bfa; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
+              style="background-color: var(--status-bg); color: var(--status-text); display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
           <%= @chamado.status_chamado.nome.truncate(40) %>
         </span>
       </div>
       <div>
-        <p class="text-xs mb-1" style="color: #94a3b8;">Aberto por</p>
-        <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.usuario.nome %></p>
+        <p class="text-xs mb-1" style="color: var(--text-muted);">Aberto por</p>
+        <p class="text-sm" style="color: var(--text);"><%= @chamado.usuario.nome %></p>
       </div>
       <div>
-        <p class="text-xs mb-1" style="color: #94a3b8;">Aberto em</p>
-        <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+        <p class="text-xs mb-1" style="color: var(--text-muted);">Aberto em</p>
+        <p class="text-sm" style="color: var(--text);"><%= @chamado.created_at.strftime("%d/%m/%Y %H:%M") %></p>
       </div>
       <% if @chamado.finalizado_em %>
         <div>
-          <p class="text-xs mb-1" style="color: #94a3b8;">Finalizado em</p>
-          <p class="text-sm" style="color: #f1f5f9;"><%= @chamado.finalizado_em.strftime("%d/%m/%Y %H:%M") %></p>
+          <p class="text-xs mb-1" style="color: var(--text-muted);">Finalizado em</p>
+          <p class="text-sm" style="color: var(--text);"><%= @chamado.finalizado_em.strftime("%d/%m/%Y %H:%M") %></p>
         </div>
       <% end %>
     </div>
   </div>
 
-  <div class="rounded-xl p-6 flex flex-col" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Descrição</h2>
+  <div class="rounded-xl p-6 flex flex-col" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+    <h2 class="text-base font-semibold mb-4" style="color: var(--text);">Descrição</h2>
     <div class="descricao-scroll">
-      <p class="text-sm" style="color: #94a3b8;"><%= @chamado.descricao %></p>
+      <p class="text-sm" style="color: var(--text-muted);"><%= @chamado.descricao %></p>
     </div>
   </div>
 
   <% if @chamado.anexos.attached? %>
-    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <p class="text-xs mb-3" style="color: #94a3b8;">Anexos</p>
+    <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <p class="text-xs mb-3" style="color: var(--text-muted);">Anexos</p>
       <div class="flex flex-wrap gap-2">
         <% @chamado.anexos.each do |anexo| %>
           <% if anexo.image? %>
@@ -138,20 +138,20 @@
   <% end %>
 </div>
 
-<div class="rounded-xl overflow-hidden mb-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-  <div class="px-6 py-4" style="border-bottom: 1px solid #2d4a6b;">
-    <h2 class="text-base font-semibold" style="color: #f1f5f9;">Comentários</h2>
+<div class="rounded-xl overflow-hidden mb-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+  <div class="px-6 py-4" style="border-bottom: 1px solid var(--border);">
+    <h2 class="text-base font-semibold" style="color: var(--text);">Comentários</h2>
   </div>
 
   <div class="comentarios-scroll">
     <% if @comentarios.any? %>
       <% @comentarios.each do |comentario| %>
-        <div class="px-6 py-4" style="border-bottom: 1px solid #2d4a6b;">
+        <div class="px-6 py-4" style="border-bottom: 1px solid var(--border);">
           <div class="flex items-center gap-2 mb-2">
-            <span class="text-sm font-medium" style="color: #a78bfa;"><%= comentario.usuario.nome %></span>
-            <span class="text-xs" style="color: #94a3b8;"><%= comentario.created_at.strftime("%d/%m/%Y %H:%M") %></span>
+            <span class="text-sm font-medium" style="color: var(--purple-light);"><%= comentario.usuario.nome %></span>
+            <span class="text-xs" style="color: var(--text-muted);"><%= comentario.created_at.strftime("%d/%m/%Y %H:%M") %></span>
           </div>
-          <p class="text-sm" style="color: #f1f5f9;"><%= comentario.mensagem %></p>
+          <p class="text-sm" style="color: var(--text);"><%= comentario.mensagem %></p>
           <% if comentario.anexos.attached? %>
             <div class="flex flex-wrap gap-2 mt-2">
               <% comentario.anexos.each do |anexo| %>
@@ -170,17 +170,17 @@
         </div>
       <% end %>
     <% else %>
-      <p class="px-6 py-4 text-sm" style="color: #94a3b8;">Nenhum comentário ainda.</p>
+      <p class="px-6 py-4 text-sm" style="color: var(--text-muted);">Nenhum comentário ainda.</p>
     <% end %>
   </div>
 
-  <div class="px-6 py-4" style="border-top: 1px solid #2d4a6b;">
-    <h3 class="text-sm font-semibold mb-3" style="color: #f1f5f9;">Adicionar Comentário</h3>
+  <div class="px-6 py-4" style="border-top: 1px solid var(--border);">
+    <h3 class="text-sm font-semibold mb-3" style="color: var(--text);">Adicionar Comentário</h3>
     <%= form_with model: [@chamado, @comentario] do |f| %>
       <div class="mb-3">
         <%= f.text_area :mensagem, rows: 3, placeholder: "Digite seu comentário...",
             class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
       <div class="mb-3">
         <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*",
@@ -192,16 +192,16 @@
             id="btn_anexos_comentario"
             onclick="document.getElementById('anexos_input').click()"
             class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-75 transition"
-            style="background-color: #152338; border: 1px solid #2d4a6b; color: #94a3b8;">
+            style="background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text-muted);">
           📎 Escolher arquivos
         </button>
 
-        <p id="anexo_aviso_comentario" class="text-xs mt-1" style="color: #64748b;">Máximo de 2 anexos.</p>
+        <p id="anexo_aviso_comentario" class="text-xs mt-1" style="color: var(--text-subtle);">Máximo de 2 anexos.</p>
         <div id="preview_container" class="flex flex-wrap gap-2 mt-2"></div>
       </div>
       <%= f.submit "Comentar",
           class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
-          style: "background-color: #7c3aed; border: none;" %>
+          style: "background-color: var(--purple); border: none;" %>
     <% end %>
   </div>
 
@@ -237,20 +237,20 @@
           reader.onload = (e) => {
             const img = document.createElement('img');
             img.src = e.target.result;
-            img.style.cssText = 'width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #2d4a6b; display: block;';
+            img.style.cssText = 'width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); display: block;';
             wrapper.appendChild(img);
           };
           reader.readAsDataURL(file);
         } else {
           const div = document.createElement('div');
-          div.style.cssText = 'background-color: #1e3352; border: 1px solid #2d4a6b; border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: #94a3b8;';
+          div.style.cssText = 'background-color: var(--bg-row); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: var(--text-muted);';
           div.textContent = '🎥 ' + file.name;
           wrapper.appendChild(div);
         }
 
         const btnRemover = document.createElement('button');
         btnRemover.textContent = '✕';
-        btnRemover.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
+        btnRemover.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: var(--danger); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
         btnRemover.onclick = (e) => {
           e.preventDefault();
           const newDt = new DataTransfer();
@@ -264,7 +264,7 @@
           if (dtCom.files.length < MAX_ANEXOS_COM) {
             btn.style.display = '';
             aviso.textContent = 'Máximo de 2 anexos.';
-            aviso.style.color = '#64748b';
+            aviso.style.color = 'var(--text-subtle)';
           }
 
           wrapper.remove();

@@ -1,15 +1,15 @@
 <div class="max-w-2xl mx-auto">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold" style="color: #a78bfa;">Novo Usuário</h1>
+    <h1 class="text-2xl font-bold" style="color: var(--purple-light);">Novo Usuário</h1>
     <%= link_to "Voltar", usuarios_path,
         class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
-        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
   </div>
 
-  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
     <%= form_with model: @usuario, url: usuarios_path do |f| %>
       <% if @usuario.errors.any? %>
-        <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5;">
+        <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: var(--error-bg); border: 1px solid var(--danger); color: var(--error-text);">
           <ul class="list-disc list-inside">
             <% @usuario.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
@@ -19,37 +19,37 @@
       <% end %>
 
       <div class="mb-4">
-        <%= f.label :nome, class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :nome, class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
         <%= f.text_field :nome, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
       <div class="mb-4">
-        <%= f.label :email, class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :email, class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
         <%= f.email_field :email, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
       <div class="mb-4">
-        <%= f.label :password, "Senha", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :password, "Senha", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
         <%= f.password_field :password, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
       <div class="mb-4">
-        <%= f.label :password_confirmation, "Confirmar senha", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :password_confirmation, "Confirmar senha", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
         <%= f.password_field :password_confirmation, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
       <div class="mb-6">
-        <label class="block text-sm mb-2" style="color: #94a3b8;">Papel</label>
+        <label class="block text-sm mb-2" style="color: var(--text-muted);">Papel</label>
         <%= select_tag :papel_id,
             options_from_collection_for_select(@papeis, :id, :nome),
             prompt: "Selecione um papel",
             class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
 
       <%= f.submit "Criar Usuário",
           class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
-          style: "background-color: #7c3aed; border: none;" %>
+          style: "background-color: var(--purple); border: none;" %>
     <% end %>
   </div>
 </div>

@@ -1,63 +1,59 @@
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold truncate max-w-lg"
-      title="<%= @usuario.nome %>"
-      style="color: #a78bfa; cursor: help;">
-    <%= truncate(@usuario.nome, length: 40) %>
-  </h1>
+  <h1 class="text-2xl font-bold" style="color: var(--purple-light);"><%= @usuario.nome %></h1>
   <div class="flex gap-2">
     <%= link_to "Editar", edit_usuario_path(@usuario),
         class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
-        style: "background-color: #7c3aed; color: white;" %>
+        style: "background-color: var(--purple); color: white;" %>
     <%= link_to "Voltar", usuarios_path,
         class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
-        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
   </div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 items-start">
-  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Informações</h2>
+  <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+    <h2 class="text-base font-semibold mb-4" style="color: var(--text);">Informações</h2>
     <div class="space-y-3">
       <div>
-        <p class="text-xs mb-1" style="color: #94a3b8;">Email</p>
-        <p class="text-sm" style="color: #f1f5f9;"><%= @usuario.email %></p>
+        <p class="text-xs mb-1" style="color: var(--text-muted);">Email</p>
+        <p class="text-sm" style="color: var(--text);"><%= @usuario.email %></p>
       </div>
       <div>
-        <p class="text-xs mb-1" style="color: #94a3b8;">Papel</p>
-        <span class="text-xs px-2 py-1 rounded-full" style="background-color: #2d4a6b; color: #a78bfa;"><%= @usuario.papeis.map(&:nome).join(", ") %></span>
+        <p class="text-xs mb-1" style="color: var(--text-muted);">Papel</p>
+        <span class="text-xs px-2 py-1 rounded-full" style="background-color: var(--status-bg); color: var(--status-text);"><%= @usuario.papeis.map(&:nome).join(", ") %></span>
       </div>
     </div>
   </div>
 
   <% unless @usuario.colaborador? %>
-    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Unidades Vinculadas</h2>
+    <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <h2 class="text-base font-semibold mb-4" style="color: var(--text);">Unidades Vinculadas</h2>
       <% if @unidades_vinculadas.any? %>
         <div class="space-y-2 mb-4">
           <% @unidades_vinculadas.each do |unidade| %>
-            <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid #2d4a6b;">
+            <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid var(--border);">
               <span class="text-sm"
                     title="<%= unidade.bloco.nome %> — <%= unidade.identificacao %>"
-                    style="color: #f1f5f9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px; display: inline-block; cursor: help;">
+                    style="color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px; display: inline-block; cursor: help;">
                 <%= "#{unidade.bloco.nome} — #{unidade.identificacao}".truncate(40) %>
               </span>
               <%= button_to "Desvincular", desvincular_unidade_usuario_path(@usuario, unidade_id: unidade.id), method: :delete,
                   data: { turbo_confirm: "Tem certeza?" },
                   form_class: "inline",
                   class: "text-xs px-3 py-1 cursor-pointer hover:opacity-75",
-                  style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444; border-radius: 8px;" %>
+                  style: "background-color: var(--bg-row); border: 1px solid var(--danger); color: var(--danger); border-radius: 8px;" %>
             </div>
           <% end %>
         </div>
       <% else %>
-        <p class="text-sm mb-4" style="color: #94a3b8;">Nenhuma unidade vinculada.</p>
+        <p class="text-sm mb-4" style="color: var(--text-muted);">Nenhuma unidade vinculada.</p>
       <% end %>
 
       <%= form_with url: vincular_unidade_usuario_path(@usuario), method: :post do |f| %>
         <div class="flex flex-col gap-2">
           <select id="select_bloco"
               class="flex-1 rounded-lg px-3 py-2 text-sm outline-none"
-              style="background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;">
+              style="background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);">
             <option value="">Selecione um bloco</option>
             <% @todas_unidades.group_by { |u| u.bloco }.each do |bloco, unidades| %>
               <option value="<%= bloco.id %>"><%= bloco.nome.truncate(40) %></option>
@@ -67,11 +63,11 @@
           <div id="lista_unidades" class="flex flex-col gap-1" style="max-height: 200px; overflow-y: auto;"></div>
 
           <input type="hidden" name="unidade_id" id="unidade_id_input" value="">
-          <p id="unidade_selecionada" class="text-xs" style="color: #a78bfa; display: none;"></p>
+          <p id="unidade_selecionada" class="text-xs" style="color: var(--purple-light); display: none;"></p>
 
           <%= f.submit "Vincular",
               class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
-              style: "background-color: #7c3aed; border: none;" %>
+              style: "background-color: var(--purple); border: none;" %>
         </div>
       <% end %>
 
@@ -101,14 +97,14 @@
               const btn = document.createElement('button');
               btn.type = 'button';
               btn.textContent = unidade.nome;
-              btn.style.cssText = 'background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; padding: 6px 12px; border-radius: 8px; text-align: left; font-size: 0.875rem; cursor: pointer;';
+              btn.style.cssText = 'background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; text-align: left; font-size: 0.875rem; cursor: pointer;';
               btn.onclick = function() {
                 document.querySelectorAll('#lista_unidades button').forEach(b => {
-                  b.style.borderColor = '#2d4a6b';
-                  b.style.backgroundColor = '#152338';
+                  b.style.borderColor = 'var(--border)';
+                  b.style.backgroundColor = 'var(--bg-page)';
                 });
-                btn.style.borderColor = '#7c3aed';
-                btn.style.backgroundColor = '#1e3352';
+                btn.style.borderColor = 'var(--purple)';
+                btn.style.backgroundColor = 'var(--bg-row)';
                 input.value = unidade.id;
                 label.textContent = 'Selecionado: ' + unidade.nome;
                 label.style.display = 'block';
@@ -123,30 +119,30 @@
 </div>
 
 <% if @usuario.colaborador? %>
-  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-    <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Tipos de Chamado Responsável</h2>
+  <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+    <h2 class="text-base font-semibold mb-4" style="color: var(--text);">Tipos de Chamado Responsável</h2>
     <% if @usuario.tipos_chamado_responsavel.any? %>
       <div class="space-y-2 mb-4">
         <% @usuario.tipos_chamado_responsavel.each do |tipo| %>
-          <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid #2d4a6b;">
+          <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid var(--border);">
             <div class="flex items-center gap-2 py-2">
               <span class="text-sm flex-1"
                     title="<%= tipo.titulo %>"
-                    style="color: #f1f5f9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
+                    style="color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
                 <%= tipo.titulo.truncate(40) %>
               </span>
-              <span class="text-xs flex-shrink-0" style="color: #94a3b8;">SLA: <%= tipo.sla_horas %>h</span>
+              <span class="text-xs flex-shrink-0" style="color: var(--text-muted);">SLA: <%= tipo.sla_horas %>h</span>
             </div>
             <%= button_to "Desvincular", desvincular_tipo_chamado_usuario_path(@usuario, tipo_chamado_id: tipo.id), method: :delete,
                 data: { turbo_confirm: "Tem certeza?" },
                 form_class: "inline",
                 class: "text-xs px-3 py-1 cursor-pointer hover:opacity-75",
-                style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444; border-radius: 8px;" %>
+                style: "background-color: var(--bg-row); border: 1px solid var(--danger); color: var(--danger); border-radius: 8px;" %>
           </div>
         <% end %>
       </div>
     <% else %>
-      <p class="text-sm mb-4" style="color: #94a3b8;">Nenhum tipo de chamado vinculado.</p>
+      <p class="text-sm mb-4" style="color: var(--text-muted);">Nenhum tipo de chamado vinculado.</p>
     <% end %>
 
     <%= form_with url: vincular_tipo_chamado_usuario_path(@usuario), method: :post do |f| %>
@@ -155,11 +151,11 @@
           options_for_select(@todos_tipos.map { |t| [t.titulo.truncate(40), t.id] }, nil),
           prompt: "Selecione um tipo",
           class: "flex-1 rounded-lg px-3 py-2 text-sm outline-none",
-          style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+          style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
         <%= f.submit "Vincular",
           class: "px-3 py-2 rounded-lg text-sm text-white cursor-pointer hover:opacity-75",
-          style: "background-color: #7c3aed; border: none;" %>
+          style: "background-color: var(--purple); border: none;" %>
       </div>
-    <% end %> @usuario.nome
+    <% end %>
   </div>
 <% end %>

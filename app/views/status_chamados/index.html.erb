@@ -1,49 +1,47 @@
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold" style="color: #a78bfa;">Status de Chamado</h1>
+  <h1 class="text-2xl font-bold" style="color: var(--purple-light);">Status de Chamado</h1>
   <%= link_to "Novo Status", new_status_chamado_path,
       class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition",
-      style: "background-color: #7c3aed;" %>
+      style: "background-color: var(--purple);" %>
 </div>
 
-<div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+<div class="rounded-xl overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border);">
   <div class="overflow-x-auto">
-    <table class="w-full table-fixed">
+    <table class="w-full">
       <thead>
-        <tr style="border-bottom: 1px solid #2d4a6b;">
-          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Nome</th>
-          <th class="px-4 py-3 text-left text-sm font-medium w-24" style="color: #94a3b8;">Padrão</th>
-          <th class="px-4 py-3 text-left text-sm font-medium w-44" style="color: #94a3b8;">Ações</th>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Nome</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Padrão</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Ações</th>
         </tr>
       </thead>
       <tbody>
         <% @status_chamados.each do |status| %>
-          <tr style="border-bottom: 1px solid #2d4a6b;">
-            <td class="px-4 py-3 text-sm" style="color: #f1f5f9;">
-              <span class="block truncate"
-                    title="<%= status.nome %>"
-                    style="cursor: help;">
-                <%= status.nome %>
-              </span>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td class="px-4 py-3 text-sm"
+                title="<%= status.nome %>"
+                style="color: var(--text); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
+              <%= status.nome %>
             </td>
-            <td class="px-4 py-3 w-24">
+            <td class="px-4 py-3">
               <% if status.padrao %>
-                <span class="text-xs px-2 py-1 rounded-full" style="background-color: #064e3b; color: #6ee7b7;">Sim</span>
+                <span class="text-xs px-2 py-1 rounded-full" style="background-color: var(--success-bg); color: var(--success-text);">Sim</span>
               <% else %>
-                <span class="text-xs px-2 py-1 rounded-full" style="background-color: #2d4a6b; color: #94a3b8;">Não</span>
+                <span class="text-xs px-2 py-1 rounded-full" style="background-color: var(--border); color: var(--text-muted);">Não</span>
               <% end %>
             </td>
-            <td class="px-4 py-3 w-44">
+            <td class="px-4 py-3">
               <div class="flex gap-2 flex-nowrap">
                 <% if status.nome.downcase == "concluído" %>
-                  <span class="text-xs px-3 py-1 rounded-lg" style="color: #64748b; border: 1px solid #2d4a6b;">Protegido</span>
+                  <span class="text-xs px-3 py-1 rounded-lg" style="color: var(--text-subtle); border: 1px solid var(--border);">Protegido</span>
                 <% else %>
                   <%= link_to "Editar", edit_status_chamado_path(status),
                       class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
-                      style: "background-color: #1e3352; border: 1px solid #a78bfa; color: #a78bfa;" %>
+                      style: "background-color: var(--bg-row); border: 1px solid var(--purple-light); color: var(--purple-light);" %>
                   <%= button_to "Remover", status_chamado_path(status), method: :delete,
                       data: { turbo_confirm: "Tem certeza?" },
                       class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition cursor-pointer",
-                      style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+                      style: "background-color: var(--bg-row); border: 1px solid var(--danger); color: var(--danger);" %>
                 <% end %>
               </div>
             </td>

@@ -1,15 +1,15 @@
 <div class="max-w-2xl mx-auto">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold" style="color: #a78bfa;">Abrir Chamado</h1>
+    <h1 class="text-2xl font-bold" style="color: var(--purple-light);">Abrir Chamado</h1>
     <%= link_to "Voltar", chamados_path,
         class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition",
-        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
   </div>
 
-  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
     <%= form_with model: @chamado do |f| %>
       <% if @chamado.errors.any? %>
-        <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5;">
+        <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: var(--error-bg); border: 1px solid var(--danger); color: var(--error-text);">
           <ul class="list-disc list-inside">
             <% @chamado.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
@@ -19,30 +19,30 @@
       <% end %>
 
       <div class="mb-4">
-        <%= f.label :unidade_id, "Unidade", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :unidade_id, "Unidade", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
         <%= f.select :unidade_id, @unidades.map { |u| ["#{u.identificacao} — #{u.bloco.nome.truncate(30)}", u.id] },
             { prompt: "Selecione uma unidade" },
             class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
 
       <div class="mb-4">
-        <%= f.label :tipo_chamado_id, "Tipo de Chamado", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :tipo_chamado_id, "Tipo de Chamado", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
         <%= f.select :tipo_chamado_id, @tipos.map { |t| [t.titulo.truncate(50), t.id] },
             { prompt: "Selecione um tipo" },
             class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
 
       <div class="mb-6">
-        <%= f.label :descricao, "Descrição", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :descricao, "Descrição", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
         <%= f.text_area :descricao, rows: 4, placeholder: "Descreva o problema...",
             class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
       </div>
 
       <div class="mb-6">
-        <%= f.label :anexos, "Anexos (opcional)", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+        <%= f.label :anexos, "Anexos (opcional)", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
 
         <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*",
             id: "chamado_anexos_input",
@@ -53,11 +53,11 @@
             id="btn_escolher_arquivos"
             onclick="document.getElementById('chamado_anexos_input').click()"
             class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-75 transition"
-            style="background-color: #152338; border: 1px solid #2d4a6b; color: #94a3b8;">
+            style="background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text-muted);">
           📎 Escolher arquivos
         </button>
 
-        <p id="anexo_aviso" class="text-xs mt-1" style="color: #64748b;">Máximo de 2 anexos.</p>
+        <p id="anexo_aviso" class="text-xs mt-1" style="color: var(--text-subtle);">Máximo de 2 anexos.</p>
 
         <div id="chamado_preview_container" class="flex flex-wrap gap-2 mt-2"></div>
       </div>
@@ -94,20 +94,20 @@
               reader.onload = (e) => {
                 const img = document.createElement('img');
                 img.src = e.target.result;
-                img.style.cssText = 'max-width: 120px; border-radius: 8px; border: 1px solid #2d4a6b; display: block;';
+                img.style.cssText = 'max-width: 120px; border-radius: 8px; border: 1px solid var(--border); display: block;';
                 wrapper.appendChild(img);
               };
               reader.readAsDataURL(file);
             } else {
               const div = document.createElement('div');
-              div.style.cssText = 'background-color: #1e3352; border: 1px solid #2d4a6b; border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: #94a3b8;';
+              div.style.cssText = 'background-color: var(--bg-row); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: var(--text-muted);';
               div.textContent = '🎥 ' + file.name;
               wrapper.appendChild(div);
             }
 
             const btnRemover = document.createElement('button');
             btnRemover.textContent = '✕';
-            btnRemover.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
+            btnRemover.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: var(--danger); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
             btnRemover.onclick = (e) => {
               e.preventDefault();
               const newDt = new DataTransfer();
@@ -121,7 +121,7 @@
               if (dt.files.length < MAX_ANEXOS) {
                 btn.style.display = '';
                 aviso.textContent = 'Máximo de 2 anexos.';
-                aviso.style.color = '#64748b';
+                aviso.style.color = 'var(--text-subtle)';
               }
 
               wrapper.remove();
@@ -135,7 +135,7 @@
 
       <%= f.submit "Abrir Chamado",
           class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
-          style: "background-color: #7c3aed; border: none;" %>
+          style: "background-color: var(--purple); border: none;" %>
     <% end %>
   </div>
 </div>

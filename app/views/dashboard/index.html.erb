@@ -1,89 +1,89 @@
 <% if current_user.administrador? %>
-  <h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Dashboard</h1>
+  <h1 class="text-2xl font-bold mb-6" style="color: var(--purple-light);">Dashboard</h1>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <p class="text-sm mb-2" style="color: #94a3b8;">Total de Blocos</p>
-      <p class="text-4xl font-bold" style="color: #a78bfa;"><%= @blocos.count %></p>
+    <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <p class="text-sm mb-2" style="color: var(--text-muted);">Total de Blocos</p>
+      <p class="text-4xl font-bold" style="color: var(--purple-light);"><%= @blocos.count %></p>
     </div>
-    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <p class="text-sm mb-2" style="color: #94a3b8;">Total de Chamados</p>
-      <p class="text-4xl font-bold" style="color: #a78bfa;"><%= @chamados.count %></p>
+    <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <p class="text-sm mb-2" style="color: var(--text-muted);">Total de Chamados</p>
+      <p class="text-4xl font-bold" style="color: var(--purple-light);"><%= @chamados.count %></p>
     </div>
-    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <p class="text-sm mb-2" style="color: #94a3b8;">Total de Usuários</p>
-      <p class="text-4xl font-bold" style="color: #a78bfa;"><%= @usuarios.count %></p>
+    <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <p class="text-sm mb-2" style="color: var(--text-muted);">Total de Usuários</p>
+      <p class="text-4xl font-bold" style="color: var(--purple-light);"><%= @usuarios.count %></p>
     </div>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-    <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <h2 class="text-base font-semibold mb-4" style="color: #f1f5f9;">Ações rápidas</h2>
+    <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <h2 class="text-base font-semibold mb-4" style="color: var(--text);">Ações rápidas</h2>
       <div class="flex flex-col gap-2">
         <%= link_to "Gerenciar Blocos", blocos_path,
             class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
-            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
         <%= link_to "Gerenciar Usuários", usuarios_path,
             class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
-            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
         <%= link_to "Ver Chamados", chamados_path,
             class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
-            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
         <%= link_to "Auditoria", logs_auditoria_path,
             class: "text-center py-2 px-4 rounded-lg text-sm transition hover:opacity-75",
-            style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+            style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
       </div>
     </div>
 
-    <div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <div class="px-6 py-4" style="border-bottom: 1px solid #2d4a6b;">
-        <h2 class="text-base font-semibold" style="color: #f1f5f9;">Últimos chamados</h2>
+    <div class="rounded-xl overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <div class="px-6 py-4" style="border-bottom: 1px solid var(--border);">
+        <h2 class="text-base font-semibold" style="color: var(--text);">Últimos chamados</h2>
       </div>
       <% if @chamados.any? %>
         <% @chamados.order(created_at: :desc).limit(5).each do |chamado| %>
-          <div class="flex justify-between items-center gap-3 px-6 py-3" style="border-bottom: 1px solid #2d4a6b;">
+          <div class="flex justify-between items-center gap-3 px-6 py-3" style="border-bottom: 1px solid var(--border);">
             <div style="min-width: 0;">
               <p class="text-sm truncate"
                 title="<%= chamado.tipo_chamado.titulo %>"
-                style="color: #f1f5f9; cursor: help;">
+                style="color: var(--text); cursor: help;">
                 #<%= chamado.id %> — <%= chamado.tipo_chamado.titulo %>
               </p>
-              <p class="text-xs" style="color: #94a3b8;"><%= chamado.unidade.identificacao %></p>
+              <p class="text-xs" style="color: var(--text-muted);"><%= chamado.unidade.identificacao %></p>
             </div>
             <span class="text-xs px-2 py-1 rounded-full flex-shrink-0"
                   title="<%= chamado.status_chamado.nome %>"
-                  style="background-color: #2d4a6b; color: #a78bfa; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help; align-self: center;">
+                  style="background-color: var(--status-bg); color: var(--status-text); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help; align-self: center;">
               <%= chamado.status_chamado.nome.truncate(18) %>
             </span>
           </div>
         <% end %>
       <% else %>
-        <p class="px-6 py-4 text-sm" style="color: #94a3b8;">Nenhum chamado ainda.</p>
+        <p class="px-6 py-4 text-sm" style="color: var(--text-muted);">Nenhum chamado ainda.</p>
       <% end %>
     </div>
 
 <% elsif current_user.colaborador? %>
-  <h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Dashboard</h1>
-  <div class="rounded-xl p-6 max-w-sm" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-    <p class="text-sm mb-2" style="color: #94a3b8;">Chamados no seu escopo</p>
-    <p class="text-4xl font-bold mb-4" style="color: #a78bfa;"><%= @chamados.count %></p>
+  <h1 class="text-2xl font-bold mb-6" style="color: var(--purple-light);">Dashboard</h1>
+  <div class="rounded-xl p-6 max-w-sm" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+    <p class="text-sm mb-2" style="color: var(--text-muted);">Chamados no seu escopo</p>
+    <p class="text-4xl font-bold mb-4" style="color: var(--purple-light);"><%= @chamados.count %></p>
     <%= link_to "Ver Chamados", chamados_path,
         class: "inline-block py-2 px-4 rounded-lg text-sm text-white font-medium",
-        style: "background-color: #7c3aed;" %>
+        style: "background-color: var(--purple);" %>
   </div>
 
 <% elsif current_user.morador? %>
-  <h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Dashboard</h1>
-  <div class="rounded-xl p-6 max-w-sm" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-    <p class="text-sm mb-2" style="color: #94a3b8;">Meus chamados</p>
-    <p class="text-4xl font-bold mb-4" style="color: #a78bfa;"><%= @chamados.count %></p>
+  <h1 class="text-2xl font-bold mb-6" style="color: var(--purple-light);">Dashboard</h1>
+  <div class="rounded-xl p-6 max-w-sm" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+    <p class="text-sm mb-2" style="color: var(--text-muted);">Meus chamados</p>
+    <p class="text-4xl font-bold mb-4" style="color: var(--purple-light);"><%= @chamados.count %></p>
     <div class="flex gap-2 flex-wrap">
       <%= link_to "Ver Chamados", chamados_path,
           class: "inline-block py-2 px-4 rounded-lg text-sm text-white font-medium",
-          style: "background-color: #7c3aed;" %>
+          style: "background-color: var(--purple);" %>
       <%= link_to "Abrir Novo Chamado", new_chamado_path,
           class: "inline-block py-2 px-4 rounded-lg text-sm",
-          style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+          style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
     </div>
   </div>
 <% end %>

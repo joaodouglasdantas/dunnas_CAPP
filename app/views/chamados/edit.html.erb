@@ -1,6 +1,6 @@
 <div style="max-width: 672px; margin: 0 auto; width: 100%; min-width: 0; overflow: hidden;">
   <div class="flex justify-between items-center mb-6 gap-4">
-    <h1 class="text-2xl font-bold truncate" style="color: #a78bfa;">
+    <h1 class="text-2xl font-bold truncate" style="color: var(--purple-light);">
       <% if current_user.administrador? || current_user.colaborador? %>
         Atualizar Status — Chamado #<%= @chamado.id %>
       <% else %>
@@ -9,70 +9,70 @@
     </h1>
     <%= link_to "Voltar", chamado_path(@chamado),
         class: "px-4 py-2 rounded-lg text-sm hover:opacity-75 transition flex-shrink-0",
-        style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
   </div>
 
   <% if current_user.morador? && @chamado.status_chamado.padrao? && @chamado.anexos.attached? %>
-    <div class="rounded-xl p-6 mb-4" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
-      <p class="text-sm mb-3 font-medium" style="color: #f1f5f9;">Anexos atuais</p>
+    <div class="rounded-xl p-6 mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border);">
+      <p class="text-sm mb-3 font-medium" style="color: var(--text);">Anexos atuais</p>
       <div class="flex flex-col gap-2">
         <% @chamado.anexos.each do |anexo| %>
-          <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="background-color: #152338; border: 1px solid #2d4a6b;">
-            <span class="text-sm" style="color: #f1f5f9;"><%= anexo.filename %></span>
+          <div class="flex items-center justify-between px-3 py-2 rounded-lg" style="background-color: var(--bg-page); border: 1px solid var(--border);">
+            <span class="text-sm" style="color: var(--text);"><%= anexo.filename %></span>
             <%= link_to "Remover",
               remover_anexo_get_chamado_path(@chamado, anexo_id: anexo.id),
               data: { turbo_confirm: "Remover este anexo?" },
               class: "text-xs px-2 py-1 rounded-lg hover:opacity-75 transition",
-              style: "border: 1px solid #ef4444; color: #ef4444; text-decoration: none;" %>
+              style: "border: 1px solid var(--danger); color: var(--danger); text-decoration: none;" %>
           </div>
         <% end %>
       </div>
     </div>
   <% end %>
 
-  <div class="rounded-xl p-6" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+  <div class="rounded-xl p-6" style="background-color: var(--bg-card); border: 1px solid var(--border);">
     <%= form_with model: @chamado do |f| %>
 
       <% if current_user.administrador? || current_user.colaborador? %>
         <div class="mb-6">
-          <%= f.label :status_chamado_id, "Status", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+          <%= f.label :status_chamado_id, "Status", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
           <%= f.select :status_chamado_id, @status_list.map { |s| [s.nome.truncate(40), s.id] },
             {},
             class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-            style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; max-width: 100%;" %>
+            style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text); max-width: 100%;" %>
         </div>
       <% end %>
 
       <% if current_user.morador? && @chamado.status_chamado.padrao? %>
         <div class="mb-6">
-          <%= f.label :unidade_id, "Unidade", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+          <%= f.label :unidade_id, "Unidade", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
           <%= f.select :unidade_id, @unidades.map { |u| ["#{u.identificacao} — #{u.bloco.nome.truncate(30)}", u.id] },
               {},
               class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-              style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+              style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
         </div>
 
         <div class="mb-6">
-          <%= f.label :tipo_chamado_id, "Tipo", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+          <%= f.label :tipo_chamado_id, "Tipo", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
           <%= f.select :tipo_chamado_id, @tipos.map { |t| [t.titulo.truncate(50), t.id] },
               {},
               class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-              style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+              style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
         </div>
       <% end %>
 
       <% unless current_user.administrador? || current_user.colaborador? %>
         <div class="mb-6">
-          <%= f.label :descricao, "Descrição", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+          <%= f.label :descricao, "Descrição", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
           <%= f.text_area :descricao,
               class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-              style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9; min-height: 100px;" %>
+              style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text); min-height: 100px;" %>
         </div>
       <% end %>
 
       <% if current_user.morador? && @chamado.status_chamado.padrao? %>
         <div class="mb-6">
-          <%= f.label :anexos, "Adicionar anexos", class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+          <%= f.label :anexos, "Adicionar anexos", class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
 
           <%= f.file_field :anexos, multiple: true, accept: "image/*,video/*",
               id: "edit_anexos_input",
@@ -83,18 +83,18 @@
               id="btn_edit_anexos"
               onclick="document.getElementById('edit_anexos_input').click()"
               class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-75 transition"
-              style="background-color: #152338; border: 1px solid #2d4a6b; color: #94a3b8;">
+              style="background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text-muted);">
             📎 Escolher arquivos
           </button>
 
-          <p id="edit_anexo_aviso" class="text-xs mt-1" style="color: #64748b;">Máximo de 2 anexos.</p>
+          <p id="edit_anexo_aviso" class="text-xs mt-1" style="color: var(--text-subtle);">Máximo de 2 anexos.</p>
           <div id="edit_preview_container" class="flex flex-wrap gap-2 mt-2"></div>
         </div>
       <% end %>
 
       <%= f.submit "Atualizar",
           class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
-          style: "background-color: #7c3aed; border: none;" %>
+          style: "background-color: var(--purple); border: none;" %>
     <% end %>
   </div>
 </div>
@@ -135,20 +135,20 @@
         reader.onload = (e) => {
           const img = document.createElement('img');
           img.src = e.target.result;
-          img.style.cssText = 'max-width: 120px; border-radius: 8px; border: 1px solid #2d4a6b; display: block;';
+          img.style.cssText = 'max-width: 120px; border-radius: 8px; border: 1px solid var(--border); display: block;';
           wrapper.appendChild(img);
         };
         reader.readAsDataURL(file);
       } else {
         const div = document.createElement('div');
-        div.style.cssText = 'background-color: #1e3352; border: 1px solid #2d4a6b; border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: #94a3b8;';
+        div.style.cssText = 'background-color: var(--bg-row); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 0.75rem; color: var(--text-muted);';
         div.textContent = '🎥 ' + file.name;
         wrapper.appendChild(div);
       }
 
       const btnRemover = document.createElement('button');
       btnRemover.textContent = '✕';
-      btnRemover.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
+      btnRemover.style.cssText = 'position: absolute; top: -6px; right: -6px; background-color: var(--danger); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer;';
       btnRemover.onclick = (e) => {
         e.preventDefault();
         const newDt = new DataTransfer();
@@ -162,7 +162,7 @@
         if (anexosExistentes + dtEdit.files.length < MAX_ANEXOS_EDIT) {
           btn.style.display = '';
           aviso.textContent = 'Máximo de 2 anexos.';
-          aviso.style.color = '#64748b';
+          aviso.style.color = 'var(--text-subtle)';
         }
 
         wrapper.remove();

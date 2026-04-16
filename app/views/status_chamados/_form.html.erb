@@ -1,6 +1,6 @@
 <%= form_with model: status_chamado do |f| %>
   <% if status_chamado.errors.any? %>
-    <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5;">
+    <div class="px-4 py-3 rounded-lg mb-4 text-sm" style="background-color: var(--error-bg); border: 1px solid var(--danger); color: var(--error-text);">
       <ul class="list-disc list-inside">
         <% status_chamado.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -10,15 +10,15 @@
   <% end %>
 
   <div class="mb-4">
-    <%= f.label :nome, class: "block text-sm mb-2", style: "color: #94a3b8;" %>
+    <%= f.label :nome, class: "block text-sm mb-2", style: "color: var(--text-muted);" %>
     <%= f.text_field :nome, class: "w-full rounded-lg px-3 py-2 text-sm outline-none",
-        style: "background-color: #152338; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+        style: "background-color: var(--bg-page); border: 1px solid var(--border); color: var(--text);" %>
   </div>
   <div class="mb-6 flex items-center gap-2">
     <%= f.check_box :padrao, class: "rounded" %>
-    <%= f.label :padrao, "Status padrão", class: "text-sm", style: "color: #94a3b8;" %>
+    <%= f.label :padrao, "Status padrão", class: "text-sm", style: "color: var(--text-muted);" %>
   </div>
 
   <%= f.submit class: "px-6 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition cursor-pointer",
-      style: "background-color: #7c3aed; border: none;" %>
+      style: "background-color: var(--purple); border: none;" %>
 <% end %>

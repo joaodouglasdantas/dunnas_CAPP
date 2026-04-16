@@ -1,23 +1,23 @@
-<h1 class="text-2xl font-bold mb-6" style="color: #a78bfa;">Auditoria do Sistema</h1>
+<h1 class="text-2xl font-bold mb-6" style="color: var(--purple-light);">Auditoria do Sistema</h1>
 
-<div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+<div class="rounded-xl overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border);">
   <div class="overflow-x-auto">
     <table class="w-full">
       <thead>
-        <tr style="border-bottom: 1px solid #2d4a6b;">
-          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Data/Hora</th>
-          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Usuário</th>
-          <th class="px-4 py-3 text-left text-sm font-medium" style="color: #94a3b8;">Ação</th>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Data/Hora</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Usuário</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Ação</th>
         </tr>
       </thead>
       <tbody>
         <% @logs.each do |log| %>
-          <tr style="border-bottom: 1px solid #2d4a6b;">
-            <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: #94a3b8;"><%= log.created_at.strftime("%d/%m/%Y %H:%M") %></td>
-            <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: #a78bfa;"><%= log.usuario&.nome || "Sistema" %></td>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: var(--text-muted);"><%= log.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+            <td class="px-4 py-3 text-sm whitespace-nowrap" style="color: var(--purple-light);"><%= log.usuario&.nome || "Sistema" %></td>
             <td class="px-4 py-3 text-sm"
                 title="<%= log.acao %>"
-                style="color: #f1f5f9; max-width: 600px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
+                style="color: var(--text); max-width: 600px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help;">
               <%= log.acao %>
             </td>
           </tr>

@@ -1,58 +1,42 @@
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold" style="color: #a78bfa;">Usuários</h1>
+  <h1 class="text-2xl font-bold" style="color: var(--purple-light);">Usuários</h1>
   <%= link_to "Novo Usuário", new_usuario_path,
       class: "px-4 py-2 rounded-lg text-sm text-white font-medium hover:opacity-75 transition",
-      style: "background-color: #7c3aed;" %>
+      style: "background-color: var(--purple);" %>
 </div>
 
-<div class="rounded-xl overflow-hidden" style="background-color: #1a2e4a; border: 1px solid #2d4a6b;">
+<div class="rounded-xl overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border);">
   <div class="overflow-x-auto">
-    <table class="w-full table-fixed">
+    <table class="w-full">
       <thead>
-        <tr style="border-bottom: 1px solid #2d4a6b;">
-          <th class="px-4 py-3 text-left text-sm font-medium w-48" style="color: #94a3b8;">Nome</th>
-          <th class="px-4 py-3 text-left text-sm font-medium hidden md:table-cell" style="color: #94a3b8;">Email</th>
-          <th class="px-4 py-3 text-left text-sm font-medium w-32" style="color: #94a3b8;">Papel</th>
-          <th class="px-4 py-3 text-left text-sm font-medium w-56" style="color: #94a3b8;">Ações</th>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Nome</th>
+          <th class="px-4 py-3 text-left text-sm font-medium hidden md:table-cell" style="color: var(--text-muted);">Email</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Papel</th>
+          <th class="px-4 py-3 text-left text-sm font-medium" style="color: var(--text-muted);">Ações</th>
         </tr>
       </thead>
       <tbody>
         <% @usuarios.each do |usuario| %>
-          <tr style="border-bottom: 1px solid #2d4a6b;">
-            <td class="px-4 py-3 text-sm w-48" style="color: #f1f5f9;">
-              <span class="block truncate"
-                    style="cursor: help;"
-                    title="<%= usuario.nome %>">
-                <%= usuario.nome %>
-              </span>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td class="px-4 py-3 text-sm" style="color: var(--text);"><%= usuario.nome %></td>
+            <td class="px-4 py-3 text-sm hidden md:table-cell" style="color: var(--text-muted);"><%= usuario.email %></td>
+            <td class="px-4 py-3">
+              <span class="text-xs px-2 py-1 rounded-full" style="background-color: var(--status-bg); color: var(--status-text);"><%= usuario.papeis.map(&:nome).join(", ") %></span>
             </td>
-            <td class="px-4 py-3 text-sm hidden md:table-cell" style="color: #94a3b8;">
-              <span class="block truncate"
-                    style="cursor: help;"
-                    title="<%= usuario.email %>">
-                <%= usuario.email %>
-              </span>
-            </td>
-            <td class="px-4 py-3 w-32">
-              <span class="text-xs px-2 py-1 rounded-full inline-block truncate max-w-full"
-                    title="<%= usuario.papeis.map(&:nome).join(', ') %>"
-                    style="background-color: #2d4a6b; color: #a78bfa; cursor: help;">
-                <%= truncate(usuario.papeis.map(&:nome).join(", "), length: 18) %>
-              </span>
-            </td>
-            <td class="px-4 py-3 w-56">
-              <div class="flex gap-2 flex-nowrap">
+            <td class="px-4 py-3">
+              <div class="flex gap-2">
                 <%= link_to "Ver", usuario_path(usuario),
                     class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
-                    style: "background-color: #1e3352; border: 1px solid #2d4a6b; color: #f1f5f9;" %>
+                    style: "background-color: var(--bg-row); border: 1px solid var(--border); color: var(--text);" %>
                 <%= link_to "Editar", edit_usuario_path(usuario),
-                    class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
-                    style: "background-color: #1e3352; border: 1px solid #a78bfa; color: #a78bfa;" %>
+                  class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition",
+                  style: "background-color: var(--bg-row); border: 1px solid var(--purple-light); color: var(--purple-light);" %>
                 <% unless usuario == current_user %>
                   <%= button_to "Remover", usuario_path(usuario), method: :delete,
                       data: { turbo_confirm: "Tem certeza?" },
                       class: "text-xs px-3 py-1 rounded-lg hover:opacity-75 transition cursor-pointer",
-                      style: "background-color: #1e3352; border: 1px solid #ef4444; color: #ef4444;" %>
+                      style: "background-color: var(--bg-row); border: 1px solid var(--danger); color: var(--danger);" %>
                 <% end %>
               </div>
             </td>
