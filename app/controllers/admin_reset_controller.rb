@@ -5,7 +5,7 @@ class AdminResetController < ApplicationController
   def reset
     return render plain: "Não autorizado", status: 401 unless params[:token] == ENV["RESET_TOKEN"]
 
-    LogAuditoria.delete_all
+    LogAuditorium.delete_all
     Anexo.delete_all
     Comentario.delete_all
     ColaboradorTipoChamado.delete_all
