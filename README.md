@@ -12,7 +12,7 @@ Sistema web desenvolvido em Ruby on Rails para gerenciamento de chamados em cond
 
 ---
 
-<a href="https://documento.com/" target="_blank" rel="noopener noreferrer">
+<a href="https://documento.com/" target="_blank">
 seu texto que vc quiser aq </a>
 
 ## Stack
@@ -91,7 +91,11 @@ docker compose restart web
 
 ## Documentação completa
 
-A documentação técnica completa está disponível em: `Documentacao_Capp.pdf`: https://github.com/joaodouglasdantas/dunnas_CAPP/blob/main/Documentacao_Capp.pdf ou `Documentacao_Capp.docx`: https://github.com/joaodouglasdantas/dunnas_CAPP/blob/main/Documentacao_Capp.docx`
+A documentação técnica completa está disponível em:
+<a href="https://github.com/joaodouglasdantas/dunnas_CAPP/blob/main/Documentacao_Capp.pdf" target="_blank">
+Documentacao_Capp.pdf </a>
+<a href="https://github.com/joaodouglasdantas/dunnas_CAPP/blob/main/Documentacao_Capp.docx" target="_blank">
+Documentacao_Capp.docx </a>
 
 ---
 
