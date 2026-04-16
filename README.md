@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.png" alt="Capp Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/joaodouglasdantas/dunnas_CAPP/main/app/assets/images/favicon.svg" alt="Capp Logo" width="200"/>
 </p>
 
 # Capp — Sistema de Gerenciamento de Chamados para Condomínio
