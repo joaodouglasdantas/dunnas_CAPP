@@ -1,8 +1,13 @@
 class ApplicationController < ActionController::Base
+  before_action :set_locale
   before_action :authenticate_user!
   before_action :set_current_user
 
   private
+
+  def set_locale
+    I18n.locale = :'pt-BR'
+  end
 
   def apenas_administrador!
     unless current_user.administrador? || current_user.tem_permissao?("gerenciar_blocos")

@@ -1,0 +1,36 @@
+pt-BR:
+  devise:
+    sessions:
+      signed_in: "Login realizado com sucesso."
+      signed_out: "Logout realizado com sucesso."
+    registrations:
+      signed_up: "Bem-vindo! Seu cadastro foi realizado com sucesso."
+      updated: "Seus dados foram atualizados com sucesso."
+      destroyed: "Sua conta foi excluída com sucesso."
+    passwords:
+      send_instructions: "Você receberá um e-mail com instruções para redefinir sua senha em breve."
+      updated: "Sua senha foi alterada com sucesso."
+      updated_not_active: "Sua senha foi alterada com sucesso."
+    confirmations:
+      send_instructions: "Você receberá um e-mail com instruções de confirmação em breve."
+      confirmed: "Sua conta foi confirmada com sucesso."
+    unlocks:
+      send_instructions: "Você receberá um e-mail com instruções para desbloquear sua conta em breve."
+      unlocked: "Sua conta foi desbloqueada com sucesso."
+    failure:
+      already_authenticated: "Você já está logado."
+      unauthenticated: "Você precisa fazer login para continuar."
+      unconfirmed: "Você precisa confirmar seu e-mail para continuar."
+      locked: "Sua conta está bloqueada."
+      invalid: "E-mail ou senha inválidos."
+      invalid_token: "Token de autenticação inválido."
+      timeout: "Sua sessão expirou. Faça login novamente."
+      inactive: "Sua conta ainda não foi ativada."
+      not_found_in_database: "E-mail ou senha inválidos."
+    mailer:
+      confirmation_instructions:
+        subject: "Instruções de confirmação"
+      reset_password_instructions:
+        subject: "Instruções para redefinir senha"
+      unlock_instructions:
+        subject: "Instruções para desbloquear conta"

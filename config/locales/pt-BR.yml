@@ -1,0 +1,18 @@
+pt-BR:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "A validação falhou: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "O registro não pode ser excluído pois existe um %{record} dependente"
+          has_many: "O registro não pode ser excluído pois existem %{record} dependentes"
+  errors:
+    messages:
+      blank: "não pode ficar em branco"
+      empty: "não pode ficar vazio"
+      invalid: "não é válido"
+      too_short: "é muito curto (mínimo: %{count} caracteres)"
+      too_long: "é muito longo (máximo: %{count} caracteres)"
+      taken: "já está em uso"
+      not_a_number: "não é um número"
+      confirmation: "não é igual a %{attribute}"
