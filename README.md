@@ -4,7 +4,7 @@
 
 Sistema web desenvolvido em Ruby on Rails para gerenciamento de chamados em condomínios, com controle de acesso por papéis (RBAC), log de auditoria, arquivamento automático e deploy em produção.
 
-🌐 **Sistema em produção:** https://dunnas-capp.onrender.com
+🌐 **Sistema em produção:** https://meu-sistema-rails.onrender.com/
 
 ---
 
