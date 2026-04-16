@@ -38,4 +38,6 @@ Rails.application.routes.draw do
   resources :logs_auditoria, only: [ :index ]
 
   get "dashboard", to: "dashboard#index"
+
+  get "/admin/reset", to: "admin_reset#reset"
 end
