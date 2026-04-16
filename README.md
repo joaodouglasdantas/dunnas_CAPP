@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/logo.png" alt="Capp Logo" width="200"/>
+</p>
+
 # Capp — Sistema de Gerenciamento de Chamados para Condomínio
 
 > Desafio Técnico Nº 0004/2026 — Dunnas
